@@ -7,7 +7,6 @@ from rest_framework import status
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model 
 
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password, make_password  
 
 from django.contrib.auth.tokens import default_token_generator
@@ -16,9 +15,10 @@ from django.conf import settings
 from django.urls import reverse
 
 
+User = get_user_model()
 class SignupView(APIView):
     def post(self, request):
-        User = get_user_model()
+       
         email = request.data.get('email')
 
         if User.objects.filter(email=email).exists():
@@ -28,7 +28,7 @@ class SignupView(APIView):
         if serializer.is_valid():
             user = serializer.save()
 
-            # Authenticate and log in the user
+            
             authenticated_user = authenticate(username=email, password=request.data.get('password'))
             if authenticated_user:
                 login(request, authenticated_user)
@@ -72,8 +72,6 @@ class SigninView(APIView):
     }, status=status.HTTP_200_OK)
 
 
-User = get_user_model()
-
 
 class ResetPasswordRequestView(APIView):
     def post(self, request):
@@ -100,8 +98,7 @@ class ResetPasswordRequestView(APIView):
 
         return Response({"message": "Password reset link sent to your email"}, status=status.HTTP_200_OK)
     
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.hashers import make_password
+
 
 class ResetPasswordView(APIView):
     def post(self, request, user_id, token):
@@ -119,11 +116,9 @@ class ResetPasswordView(APIView):
         except User.DoesNotExist:
             return Response({"error": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Verify token
         if not default_token_generator.check_token(user, token):
             return Response({"error": "Invalid or expired token"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Update password
         user.password = make_password(password)
         user.save()
 

@@ -115,8 +115,8 @@ DATABASES = {
 }
 
 # Email Configuration for Password Reset
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"  # Replace with your email provider - gmail
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend" #Simple Mail Transfer Protocol
+EMAIL_HOST = "smtp.gmail.com"  
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "nickyojha391@gmail.com"

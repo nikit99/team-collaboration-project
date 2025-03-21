@@ -32,7 +32,7 @@ def home(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home),  # Add this line
+    path('', home), 
     path('auth/', include('auth_app.urls')),
 ]
 

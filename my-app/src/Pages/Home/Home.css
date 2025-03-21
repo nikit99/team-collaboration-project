@@ -1,3 +1,7 @@
-.home-title{
-    margin-left: 40pc;
-}
+.home-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 100%; 
+  }
+  

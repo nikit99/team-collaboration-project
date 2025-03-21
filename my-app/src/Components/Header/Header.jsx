@@ -32,7 +32,7 @@ const Header = () => {
             <img src={teamworkLogo} height="60" alt="Teamwork Logo" />
           </div>
           <div className="navbar-header">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" >
               Team Collaboration Project
             </a>
           </div>
