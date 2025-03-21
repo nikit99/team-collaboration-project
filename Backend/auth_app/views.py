@@ -84,7 +84,6 @@ class ResetPasswordRequestView(APIView):
         except User.DoesNotExist:
             return Response({"error": "User with this email does not exist"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Generate token
         token = default_token_generator.make_token(user)
         reset_url = f"{settings.FRONTEND_URL}/reset-password/{user.pk}/{token}/"
 

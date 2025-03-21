@@ -17,7 +17,6 @@ const Home = () => {
 
   return (
     <div>
-      <Header />
       <SideBar />
       <div className="home-container">
         <h2 className="home-title">Welcome to the Home Page</h2>
