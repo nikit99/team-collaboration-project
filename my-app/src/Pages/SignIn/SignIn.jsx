@@ -73,47 +73,7 @@ const Signin = () => {
       </div>
     </div>
   );
-  // return (
-  //   <div className="signin-container">
-  //     <div className="signin-card">
-  //       <h2 className="signin-title">Sign In</h2>
-  //       {error && <p className="signin-error">{error}</p>}
-  //       <form onSubmit={handleSubmit} className="signin-form">
-  //         <input 
-  //           type="email" 
-  //           name="email" 
-  //           className="signin-input" 
-  //           placeholder="Email" 
-  //           value={formData.email} 
-  //           onChange={handleChange} 
-  //           required 
-  //         />
-  //         <div className="input-container">
-  //           <input 
-  //             type={showPassword ? "text" : "password"} 
-  //             name="password" 
-  //             className="signin-input password-input" 
-  //             placeholder="Password" 
-  //             value={formData.password} 
-  //             onChange={handleChange} 
-  //             required 
-  //           />
-  //           <FaEye 
-  //             className={`eye-icon ${showPassword ? 'hidden' : ''}`} 
-  //             onClick={() => setShowPassword(true)} 
-  //           />
-  //           <FaEyeSlash 
-  //             className={`eye-icon ${showPassword ? '' : 'hidden'}`} 
-  //             onClick={() => setShowPassword(false)} 
-  //           />
-  //         </div>
-  //         <button type="submit" className="signin-button">Sign In</button>
-  //       </form>
-  //       <p className="signin-text">Don't have an account? <Link to="/signup" className="signin-link">Sign Up</Link></p>
-  //       <p className="signin-text"><Link to="/reset-password-request" className="signin-link">Forgot password?</Link></p>
-  //     </div>
-  //   </div>
-  // );
+ 
 };
 
 export default Signin;

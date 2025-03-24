@@ -23,6 +23,7 @@ const Header = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
     setUser(null);
+    // setWorkspaces([]);
     navigate('/signin');
   };
 
@@ -41,6 +42,19 @@ const Header = () => {
           <div className="navbar-header">
             <a className="navbar-brand">Team Collaboration Project</a>
           </div>
+
+          <ul className="nav navbar-nav">
+            <li>
+              <Link to="/">
+                <span className="HomeIcon"></span> Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about">
+                <span className="AboutIcon"></span> About
+              </Link>
+            </li>
+          </ul>
 
           <ul className="nav navbar-nav navbar-right">
             {user ? (
@@ -61,18 +75,17 @@ const Header = () => {
                 )}
               </li>
             ) : (
-              <>
-                <li>
+              <li>
+                {location.pathname === '/SignIn' ? (
                   <Link to="/SignUp">
                     <span className="SignUp"></span> Sign Up
                   </Link>
-                </li>
-                <li>
+                ) : (
                   <Link to="/SignIn">
                     <span className="Login"></span> Login
                   </Link>
-                </li>
-              </>
+                )}
+              </li>
             )}
           </ul>
         </div>

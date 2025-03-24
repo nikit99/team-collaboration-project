@@ -20,7 +20,7 @@ Including another URLconf
 
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
-#     path('auth/', include('auth_app.urls')),  # Include auth routes
+#     path('auth/', include('apps.auth_app.urls')),  # Include auth routes
 # ]
 
 from django.contrib import admin
@@ -33,6 +33,7 @@ def home(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home), 
-    path('auth/', include('auth_app.urls')),
+    path('auth/', include('apps.auth_app.urls')),
+    path('workspaces/', include('apps.workspaces.urls')),  # Include workspace routes
 ]
 

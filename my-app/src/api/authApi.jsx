@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_AUTH_URL;
 //console.log(API_BASE_URL);
 
 
@@ -45,3 +45,29 @@ export const resetPassword = async (userId, token, passwords) => {
     throw error.response?.data || 'Password reset failed!';
   }
 };
+
+
+
+export const getUsers = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/users/`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
+
+
+export const getUserById = async (userId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/users/${userId}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user ${userId}:`, error.response?.data || error.message);
+    return null; // Return null if the user is not found
+  }
+};
+
+

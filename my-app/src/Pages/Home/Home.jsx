@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
-      navigate('/signin');
+      navigate('/SignIn');
     }
   }, [navigate]);
 

@@ -1,110 +1,3 @@
-// import { useState } from 'react';
-// import { useNavigate, Link } from 'react-router-dom';
-// import { handleAuth } from '../../utils/authHandler';
-// import { FaEye, FaEyeSlash } from 'react-icons/fa';
-// import './SignUp.css';
-
-// const Signup = () => {
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     email: '',
-//     password: '',
-//     confirm_password: '',
-//     role: '',
-//   });
-  
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-//   const [error, setError] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (formData.password !== formData.confirm_password) {
-//       setError('Passwords do not match!');
-//       return;
-//     }
-//     await handleAuth('signup', formData, setError, navigate);
-//   };
-
-//   return (
-//     <div className="signup-container">
-//       <div className="signup-card">
-//         <h2 className="signup-title">Sign Up</h2>
-//         {error && <p className="signup-error">{error}</p>}
-//         <form onSubmit={handleSubmit} className="signup-form">
-//           <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="signup-input" />
-//           <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="signup-input" />
-//           {/* <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required className="signup-input" /> */}
-//           {/* <input type="password" name="confirm_password" placeholder="Confirm Password" value={formData.confirm_password} onChange={handleChange} required className="signup-input" /> */}
-          
-//           <div className="input-container">
-//             <input 
-//               type={showPassword ? "text" : "password"} 
-//               name="password" 
-//               className="signup-input password-input" 
-//               placeholder="Password" 
-//               value={formData.password} 
-//               onChange={handleChange} 
-//               required 
-//             />
-//             <FaEye 
-//               className={`eye-icon ${showPassword ? 'hidden' : ''}`} 
-//               onClick={() => setShowPassword(true)} 
-//             />
-//             <FaEyeSlash 
-//               className={`eye-icon ${showPassword ? '' : 'hidden'}`} 
-//               onClick={() => setShowPassword(false)} 
-//             />
-//           </div>
-
-//           <div className="input-container">
-//             <input 
-//               type={showConfirmPassword ? "text" : "password"} 
-//               name="confirm_password" 
-//               className="signup-input password-input" 
-//               placeholder="Confirm Password" 
-//               value={formData.confirm_password} 
-//               onChange={handleChange} 
-//               required 
-//             />
-//             <FaEye 
-//               className={`eye-icon ${showConfirmPassword ? 'hidden' : ''}`} 
-//               onClick={() => setShowConfirmPassword(true)} 
-//             />
-//             <FaEyeSlash 
-//               className={`eye-icon ${showConfirmPassword ? '' : 'hidden'}`} 
-//               onClick={() => setShowConfirmPassword(false)} 
-//             />
-//           </div>
-
-//           <div className="signup-role">
-//             <label className="role-label">Role:</label>
-//             <div className="role-options">
-//               <label>
-//                 <input type="radio" name="role" value="user" checked={formData.role === 'user'} onChange={handleChange} />
-//                 <span>User</span>
-//               </label>
-//               <label>
-//                 <input type="radio" name="role" value="admin" checked={formData.role === 'admin'} onChange={handleChange} />
-//                 <span>Admin</span>
-//               </label>
-//             </div>
-//           </div>
-//           <button type="submit" className="signup-button">Sign Up</button>
-//         </form>
-//         <p className="signup-text">Already have an account? <Link to="/signin" className="signup-link">Sign In</Link></p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Signup;
-
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { handleAuth } from '../../utils/authHandler';
@@ -117,7 +10,7 @@ const Signup = () => {
     email: '',
     password: '',
     confirm_password: '',
-    role: '',
+    // role: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -167,9 +60,9 @@ const Signup = () => {
               required 
             />
             {showPassword ? (
-              <FaEyeSlash className="eye-icon" onClick={() => setShowPassword(false)} />
+              <FaEyeSlash className="eye-icons" onClick={() => setShowPassword(false)} />
             ) : (
-              <FaEye className="eye-icon" onClick={() => setShowPassword(true)} />
+              <FaEye className="eye-icons" onClick={() => setShowPassword(true)} />
             )}
           </div>
 
@@ -186,20 +79,20 @@ const Signup = () => {
               required 
             />
             {showConfirmPassword ? (
-              <FaEyeSlash className="eye-icon" onClick={() => setShowConfirmPassword(false)} />
+              <FaEyeSlash className="eye-icons" onClick={() => setShowConfirmPassword(false)} />
             ) : (
-              <FaEye className="eye-icon" onClick={() => setShowConfirmPassword(true)} />
+              <FaEye className="eye-icons" onClick={() => setShowConfirmPassword(true)} />
             )}
           </div>
 
-          <div className="input-group">
+          {/* <div className="input-group">
             <label htmlFor="role" className="signup-label">Role</label>
             <select id="role" name="role" placeholder="Select your role" value={formData.role} onChange={handleChange} required className="signup-input">
               <option value="">Select Role</option>
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
-          </div>
+          </div> */}
 
           <button type="submit" className="signup-button">Sign Up</button>
         </form>

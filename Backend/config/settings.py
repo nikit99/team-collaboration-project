@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'auth_app',
+    'apps.auth_app',
+    'apps.workspaces',
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
@@ -47,9 +48,13 @@ AUTH_USER_MODEL = "auth_app.User" #use custom user model
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+        # 'rest_framework.authentication.SessionAuthentication',  # Optional
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+         'rest_framework.permissions.AllowAny',  # Allow signup/signin without token
+    ),
 }
 
 MIDDLEWARE = [
@@ -72,7 +77,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = True  
 CORS_ALLOW_CREDENTIALS = True
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -90,7 +95,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database

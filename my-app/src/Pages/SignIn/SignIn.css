@@ -48,7 +48,8 @@
 .signin-button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #008080;
+  /* background-color: #e0e0e0; */
   color: white;
   border: none;
   border-radius: 5px;
@@ -59,7 +60,8 @@
 }
 
 .signin-button:hover {
-  background-color: #0056b3;
+  /* background-color: #0056b3; */
+  background-color: #006666; /* Darker Teal on Hover */
 }
 
 .signin-text {
@@ -88,7 +90,7 @@
 .eye-icon {
   position: absolute;
   right: 10px;
-  top: 60%;
+  top: 40%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
@@ -132,15 +134,7 @@
   width: 100%;
 }
 
-.eye-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  color: #555;
-}
+
 
 .hidden {
   display: none;

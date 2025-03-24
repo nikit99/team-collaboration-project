@@ -6,7 +6,8 @@ const SideBar = () => {
   return (
     <Sidebar
       style={{
-        marginTop: '100px',
+        backgroundColor: 'wheat',
+        marginTop: '70px',
         height: '100vh', // Full height
         width: '12pc', // Small width
         position: 'fixed', // Fix to the left
@@ -15,12 +16,12 @@ const SideBar = () => {
       }}
     >
       <Menu>
-        <SubMenu label="Charts">
+        {/* <SubMenu label="Charts">
           <MenuItem> Home </MenuItem>
           <MenuItem> About </MenuItem>
-        </SubMenu>
-        <MenuItem> Home </MenuItem>
-        <MenuItem> About </MenuItem>
+        </SubMenu> */}
+        <MenuItem component={<Link to="/" />}> Home </MenuItem> 
+        <MenuItem component={<Link to="/workspaces" />}> Workspace </MenuItem> 
       </Menu>
     </Sidebar>
   );
