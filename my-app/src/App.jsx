@@ -6,6 +6,7 @@ import SignIn from './Pages/SignIn/SignIn';
 import Home from './Pages/Home/Home';
 import ResetPasswordRequest from './Pages/ResetPasswordRequest/ResetPasswordRequest';
 import ResetPassword from './Pages/ResetPassword/ResetPassword';
+import User from './Pages/Users/Users';
 import Header from './Components/Header/Header';
 import Workspace from './Pages/Workspace/Workspace';
 import WorkspaceForm from './Pages/WorkspaceForm/WorkspaceForm';
@@ -26,7 +27,8 @@ function App() {
           path="/reset-password/:userId/:token"
           element={<ResetPassword />}
         />
-
+        <Route path="/users" element={<User />} />
+       
         <Route path="/workspaces" element={<Workspace />} />
         <Route path="/create-workspace" element={<WorkspaceForm />} />
         <Route path="/edit-workspace/:id" element={<WorkspaceForm />} />

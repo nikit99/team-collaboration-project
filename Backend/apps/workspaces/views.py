@@ -101,10 +101,17 @@ class WorkspaceListCreateView(generics.ListCreateAPIView):
         """
         user = self.request.user
         
+        # if user.role == "superadmin":
+        #     return Workspace.objects.all()  # Superadmin gets all workspaces
+        
+        # return Workspace.objects.filter(Q(owner=user) | Q(members=user)).distinct()
         if user.role == "superadmin":
             return Workspace.objects.all()  # Superadmin gets all workspaces
-        
-        return Workspace.objects.filter(Q(owner=user) | Q(members=user)).distinct()
+        elif user.role == "admin":
+            return Workspace.objects.filter(Q(owner=user) | Q(members=user)).distinct()
+        else:  # Regular user
+            return Workspace.objects.filter(members=user)
+
 
         
     def perform_create(self, serializer):
@@ -114,31 +121,6 @@ class WorkspaceListCreateView(generics.ListCreateAPIView):
         if self.request.user.role not in ["admin", "superadmin"]:
             raise PermissionDenied("Only admins can create workspaces")
         serializer.save(owner=self.request.user)  # Set owner as the logged-in admin
-
-
-# class WorkspaceDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     serializer_class = WorkspaceSerializer
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         """
-#         - Superadmin: Can view/edit/delete all workspaces.
-#         - Others: Can only view/edit/delete their own workspaces.
-#         """
-#         if self.request.user.role == "superadmin":
-#             return Workspace.objects.all()  # Superadmin gets all workspaces
-#         return Workspace.objects.filter(owner=self.request.user)  # Others get only their workspaces
-
-#     def perform_update(self, serializer):
-#         """
-#         - Superadmin: Can edit any workspace.
-#         - Owner: Can edit their own workspace.
-#         """
-#         workspace = self.get_object()
-#         if self.request.user != workspace.owner and self.request.user.role != "superadmin":
-#             raise PermissionDenied("Only the owner or superadmin can update this workspace")
-#         serializer.save()
 
         
 class WorkspaceDetailView(generics.RetrieveUpdateDestroyAPIView):

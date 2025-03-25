@@ -68,7 +68,7 @@ const Signin = () => {
           
           <button type="submit" className="signin-button">Sign In</button>
         </form>
-        <p className="signin-text">Don't have an account? <Link to="/signup" className="signin-link">Sign Up</Link></p>
+        <p className="signin-text">Don't have an account? <Link to="/SignUp" className="signin-link">Sign Up</Link></p>
         <p className="signin-text"><Link to="/reset-password-request" className="signin-link">Forgot password?</Link></p>
       </div>
     </div>

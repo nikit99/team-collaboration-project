@@ -22,6 +22,7 @@ const SideBar = () => {
         </SubMenu> */}
         <MenuItem component={<Link to="/" />}> Home </MenuItem> 
         <MenuItem component={<Link to="/workspaces" />}> Workspace </MenuItem> 
+        <MenuItem component={<Link to="/users" />}> Users </MenuItem> 
       </Menu>
     </Sidebar>
   );

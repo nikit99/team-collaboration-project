@@ -70,4 +70,32 @@ export const getUserById = async (userId) => {
   }
 };
 
+export const deleteUser = async (userId) => {
+  try {
+    const token = localStorage.getItem('authToken'); // Fetch the token like in getWorkspaceById
+    const headers = { Authorization: `Token ${token}` };
+
+    const response = await axios.delete(`${API_BASE_URL}/users/${userId}/delete/`, { headers });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || 'Failed to delete user!';
+  }
+};
+
+export const updateUserRole = async (userId, newRole) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const headers = { Authorization: `Token ${token}` };
+
+    const response = await axios.put(
+      `${API_BASE_URL}/users/${userId}/update-role/`,
+      { role: newRole }, // Sending updated role
+      { headers }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || 'Failed to update user role!';
+  }
+};
 

@@ -19,6 +19,9 @@ from rest_framework.generics import ListAPIView
 
 from rest_framework.permissions import AllowAny
 
+from rest_framework.views import APIView
+from .models import User  # Ensure User model is imported
+
 
 User = get_user_model()
 # class SignupView(APIView):
@@ -240,7 +243,7 @@ class DeleteUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, user_id):
-        if request.user.role not in ['superadmin', 'admin']:
+        if request.user.role not in ['superadmin']:
             return Response({"error": "You do not have permission to delete users"}, status=status.HTTP_403_FORBIDDEN)
 
         try:
@@ -251,3 +254,28 @@ class DeleteUserView(APIView):
         user.delete()
 
         return Response({"message": "User deleted successfully"}, status=status.HTTP_200_OK)
+    
+class UpdateUserRoleView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, user_id):
+        if request.user.role != 'superadmin':  
+            return Response({"error": "You do not have permission to edit roles"}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Prevent modification of superadmin
+        if user.role == 'superadmin':
+            return Response({"error": "Super Admin role cannot be modified"}, status=status.HTTP_403_FORBIDDEN)
+
+        new_role = request.data.get('role')
+        if new_role not in ['admin', 'user']:  # Allow only these roles
+            return Response({"error": "Invalid role"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.role = new_role
+        user.save()
+
+        return Response({"message": "User role updated successfully"}, status=status.HTTP_200_OK)

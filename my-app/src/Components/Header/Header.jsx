@@ -24,7 +24,7 @@ const Header = () => {
     localStorage.removeItem('user');
     setUser(null);
     // setWorkspaces([]);
-    navigate('/signin');
+    navigate('/SignIn');
   };
 
   const toggleDropdown = () => {
