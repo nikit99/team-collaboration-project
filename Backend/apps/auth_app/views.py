@@ -24,36 +24,7 @@ from .models import User  # Ensure User model is imported
 
 
 User = get_user_model()
-# class SignupView(APIView):
-#     permission_classes = [AllowAny]  # 🔹 No token required to signup
-#     def post(self, request):
-       
-#         email = request.data.get('email')
 
-#         if User.objects.filter(email=email).exists():
-#             return Response({'error': 'User with this email already exists!'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.save()
-
-            
-#             authenticated_user = authenticate(username=email, password=request.data.get('password'))
-#             if authenticated_user:
-#                 login(request, authenticated_user)
-#                 token, _ = Token.objects.get_or_create(user=authenticated_user)
-
-#                 return Response({
-#                     'message': 'User created and logged in successfully',
-#                     'token': token.key,
-#                     'user': {
-#                         'id': user.id,
-#                         'email': user.email,
-#                         'name': user.name,
-#                     }
-#                 }, status=status.HTTP_201_CREATED)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class SignupView(APIView):
     permission_classes = [AllowAny] 
 

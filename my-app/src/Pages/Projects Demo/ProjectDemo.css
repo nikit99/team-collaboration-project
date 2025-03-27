@@ -1,0 +1,224 @@
+/* 
+
+   .projects-container {
+    padding: 20px;
+  }
+  
+  .projects-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .loading-message,
+  .error {
+    text-align: center;
+    font-size: 18px;
+    color: red;
+  }
+  
+  .projects-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .projects-list th,
+  .projects-list td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .projects-list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-icon,
+  .delete-icon,
+  .view-icon {
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .add-project-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .add-project-btn:hover {
+    background-color: #218838;
+  }
+   */
+
+  /*************/
+  
+.projects-container {
+    padding: 20px;
+    /* max-width: 1000px; */
+    /* margin: auto; */
+    /* margin-left: 100px; */
+  max-width: auto;
+  background-color: #f0f8f8; /* Lighter teal shade for better contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.projects-heading {
+  text-align: center;
+  color: #004d4d; /* Dark teal for better visibility */
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Table */
+.projects-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.projects-table th, .projects-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.projects-table th {
+  background-color: #008080; /* Match header color */
+  color: white;
+  font-weight: bold;
+}
+
+.projects-table tr:nth-child(even) {
+  background-color: #e6f2f2; /* Very light teal for alternating rows */
+}
+
+.projects-table tr:hover {
+  background-color: #cce0e0; /* Subtle hover effect */
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+/* Edit Button */
+.edit-btn {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* View Button */
+.view-btn {
+  background-color: #008080; /* Match header color */
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #006666; /* Darker shade for hover */
+}
+
+/* Add Project Button */
+.add-project-btn {
+  display: block;
+  width: fit-content;
+  margin: 20px auto;
+  background-color: #008080; /* Match header color */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-project-btn:hover {
+  background-color: #006666; /* Darker teal on hover */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .projects-table th, .projects-table td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}
+
+/* Actions Column */
+.actions-column {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Common button styling */
+.actions-column svg {
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.actions-column svg:hover {
+  transform: scale(1.2);
+}
+
+/* Status Select */
+.status-select {
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f0f8f8; /* Light teal background */
+  color: #004d4d; /* Darker teal text */
+}

@@ -34,6 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home), 
     path('auth/', include('apps.auth_app.urls')),
-    path('workspaces/', include('apps.workspaces.urls')),  # Include workspace routes
+    path('workspaces/', include('apps.workspaces.urls')), 
+    path('projects/', include('apps.projects.urls')), 
 ]
 

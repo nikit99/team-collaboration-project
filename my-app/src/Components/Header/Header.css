@@ -3,8 +3,14 @@ header {
   /* background-color: #881111; */
   /* background: linear-gradient(to right, #881111, #ff5733);  */
   background-color: #008080;
+  /* background-color: #F8F9FA; */
   padding: 10px 20px;
-  height: 70px;
+  height: 55px;
+  color: #333;
+}
+
+header * {  
+  /* color: #333  */
 }
 
 .navbar {
@@ -112,8 +118,8 @@ li .btn-danger {
 }
 
 .user-circle {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   background-color: #58a1ee;
   color: white;
@@ -137,7 +143,7 @@ li .btn-danger {
 .nav-item {
   position: relative;
 }
-
+/* 
 .dropdown-menu {
   position: absolute;
   top: 50px;
@@ -167,7 +173,49 @@ li .btn-danger {
 
 .dropdown-item:hover {
   background: #f0f0f0;
+} */
+
+.dropdown-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 2px;
+  z-index: 10;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;  */
 }
+
+.dropdown-menu p {
+  margin: 0;
+  padding: 4px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: black; /* Ensures the text is black */
+  /* text-align: center; */
+  width: 100%;
+}
+
+.dropdown-item {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 0;
+  width: 100%;
+  /* text-align: center; */
+  font-size: 14px;
+  color: #333;
+  transition: background 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
 
 /* .HomeIcon::before {
   content: "🏠"; 

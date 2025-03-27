@@ -36,12 +36,12 @@ const Header = () => {
     <header>
       <nav className="navbar navbar-inverse">
         <div className="container">
-          <div>
+          {/* <div>
             <img src={teamworkLogo} alt="Teamwork Logo" className="logo" />
           </div>
           <div className="navbar-header">
             <a className="navbar-brand">Team Collaboration Project</a>
-          </div>
+          </div> */}
 
           <ul className="nav navbar-nav">
             <li>
@@ -54,6 +54,11 @@ const Header = () => {
                 <span className="AboutIcon"></span> About
               </Link>
             </li>
+            {/* <li>
+              <Link to="/about">
+                <span className="AboutIcon"></span> Contact Us
+              </Link>
+            </li> */}
           </ul>
 
           <ul className="nav navbar-nav navbar-right">
@@ -68,6 +73,8 @@ const Header = () => {
                 </div>
                 {dropdownOpen && (
                   <div className="dropdown-menu">
+                    <p style={{ color: 'black' }}>{user.name}</p>
+                    {/* <p style={{ color: 'black' }}>{user.role}</p> */}
                     <button onClick={handleSignOut} className="dropdown-item">
                       Sign Out
                     </button>
@@ -95,77 +102,3 @@ const Header = () => {
 };
 
 export default Header;
-
-// import React, { useEffect, useState } from 'react';
-// import { Link, useNavigate, useLocation } from 'react-router-dom';
-// import './Header.css';
-// import teamworkLogo from '../../../public/teamworkLogo.jpg';
-
-// const Header = () => {
-//   const navigate = useNavigate();
-//   const location = useLocation(); //detect routes changes
-//   const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     const storedUser = localStorage.getItem('user');
-//     if (storedUser) {
-//       setUser(JSON.parse(storedUser));
-//     } else {
-//       setUser(null);
-//     }
-//   }, [location]);
-
-//   const handleSignOut = () => {
-//     localStorage.removeItem('authToken');
-//     localStorage.removeItem('user');
-//     setUser(null);
-//     navigate('/signin');
-//   };
-
-//   return (
-//     <header>
-//       <nav className="navbar navbar-inverse">
-//         <div className="container">
-//           <div>
-//             <img src={teamworkLogo} alt="Teamwork Logo" />
-//           </div>
-//           <div className="navbar-header">
-//             <a className="navbar-brand" >
-//               Team Collaboration Project
-//             </a>
-//           </div>
-
-//           <ul className="nav navbar-nav navbar-right">
-//             {user ? (
-//               <>
-//                 <li>
-//                   <span className="navbar-text">{user.name}</span>
-//                 </li>
-//                 <li>
-//                   <button  onClick={handleSignOut}>
-//                     Sign Out
-//                   </button>
-//                 </li>
-//               </>
-//             ) : (
-//               <>
-//                 <li>
-//                   <Link to="/SignUp">
-//                     <span className="SignUp"></span> Sign Up
-//                   </Link>
-//                 </li>
-//                 <li>
-//                   <Link to="/SignIn">
-//                     <span className="Login"></span> Login
-//                   </Link>
-//                 </li>
-//               </>
-//             )}
-//           </ul>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// };
-
-// export default Header;

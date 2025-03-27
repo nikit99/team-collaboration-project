@@ -1,21 +1,19 @@
-.workspace-container {
-    /* max-width: 1000px; */
-    /* margin: auto; */
-    margin-left: 16pc;
+.projects-container {
+    max-width: 1000px;
+    margin: auto;
     padding: 20px;
     background-color: #f4f4f9;
     border-radius: 10px;
     height: calc(100vh - 70px);
-  }
-  
-  .workspace-grid {
+}
+
+.projects-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    /* justify-content: center; */
-  }
-  
-  .workspace-card {
+}
+
+.project-card {
     width: 260px;
     min-height: 180px;
     border: 1px solid #ddd;
@@ -28,44 +26,44 @@
     justify-content: space-between;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .workspace-card:hover {
+}
+
+.project-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .card-icons {
+}
+
+.card-icons {
     display: flex;
     justify-content: center;
     gap: 15px;
-  }
-  
-  .edit-icon,
-  .delete-icon,
-  .view-icon {
+}
+
+.edit-icon,
+.delete-icon,
+.view-icon {
     font-size: 20px;
     cursor: pointer;
     transition: color 0.3s, transform 0.2s;
-  }
-  
-  .edit-icon:hover {
+}
+
+.edit-icon:hover {
     color: #007bff;
     transform: scale(1.2);
-  }
-  
-  .delete-icon:hover {
+}
+
+.delete-icon:hover {
     color: #dc3545;
     transform: scale(1.2);
-  }
-  
-  .view-icon:hover {
+}
+
+.view-icon:hover {
     color: #28a745;
     transform: scale(1.2);
-  }
-  
-  /* Add Workspace Card */
-  .add-card {
+}
+
+/* Add Project Card */
+.add-card {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,33 +72,33 @@
     background-color: #e0e0e0;
     border: dashed 2px #bbb;
     transition: background-color 0.3s ease-in-out;
-  }
-  
-  .add-card:hover {
+}
+
+.add-card:hover {
     background-color: #d0d0d0;
-  }
-  
-  .plus-sign {
+}
+
+.plus-sign {
     font-size: 36px;
     font-weight: bold;
     color: #007bff;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .add-card:hover .plus-sign {
+}
+
+.add-card:hover .plus-sign {
     transform: rotate(90deg);
-  }
-  
-  /* Loading Message */
-  .loading-message {
+}
+
+/* Loading Message */
+.loading-message {
     font-size: 18px;
     text-align: center;
     color: #0056b3;
     font-weight: bold;
     margin-top: 20px;
-  }
-  
-  .workspace-heading {
+}
+
+.projects-heading {
     text-align: center;
     font-size: 26px;
     font-weight: bold;
@@ -109,15 +107,15 @@
     border-bottom: 3px solid #007bff;
     display: inline-block;
     padding-bottom: 5px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .workspace-grid {
-      flex-direction: column;
-      align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .projects-grid {
+        flex-direction: column;
+        align-items: center;
     }
-    .workspace-card {
-      width: 90%;
+    .project-card {
+        width: 90%;
     }
-  }
+}

@@ -10,6 +10,10 @@ import User from './Pages/Users/Users';
 import Header from './Components/Header/Header';
 import Workspace from './Pages/Workspace/Workspace';
 import WorkspaceForm from './Pages/WorkspaceForm/WorkspaceForm';
+import Projects from './Pages/Projects/Projects';
+import ProjectForm from './Pages/ProjectForm/ProjectForm';
+
+import ProjectDemo from './Pages/Projects Demo/ProjectDemo';
 
 function App() {
   return (
@@ -33,6 +37,13 @@ function App() {
         <Route path="/create-workspace" element={<WorkspaceForm />} />
         <Route path="/edit-workspace/:id" element={<WorkspaceForm />} />
         
+        
+        <Route path="/Projects" element={<Projects />} />
+        <Route path="/ProjectForm" element={<ProjectForm />} />
+        <Route path="/edit-project/:id" element={<ProjectForm />} /> 
+
+        <Route path="ProjectDemo" element={<ProjectDemo />} />
+        <Route path="/ProjectDemo/:workspaceId" element={<ProjectDemo />} />
        
       </Routes>
     </Router>

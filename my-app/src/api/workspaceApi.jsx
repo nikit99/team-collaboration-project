@@ -18,7 +18,7 @@ export const getWorkspaces = async () => {
   }
 };
 
-// Create a new workspace
+
 export const createWorkspace = async (workspaceData) => {
   try {
     const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
@@ -32,7 +32,7 @@ export const createWorkspace = async (workspaceData) => {
   }
 };
 
-// Update workspace
+
 export const updateWorkspace = async (id, workspaceData) => {
   try {
     const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
@@ -48,7 +48,7 @@ export const updateWorkspace = async (id, workspaceData) => {
   }
 };
 
-// Delete workspace
+
 export const deleteWorkspace = async (id) => {
   try {
     const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
@@ -61,7 +61,7 @@ export const deleteWorkspace = async (id) => {
     return false;
   }
 };
-// Fetch a single workspace by ID
+
 export const getWorkspaceById = async (id) => {
   try {
     const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
