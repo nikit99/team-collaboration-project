@@ -1,10 +1,14 @@
+
+
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { requestPasswordReset } from '../../api/authapi';
 import './ResetPasswordRequest.css';
 
 const ResetPasswordRequest = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +36,18 @@ const ResetPasswordRequest = () => {
             required
           />
         </div>
-        <button type="submit" className="reset-password-button">
-          Send Reset Link
-        </button>
+        <div className="button-group">
+          <button type="submit" className="reset-password-button">
+            Send Reset Link
+          </button>
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={() => navigate('/signin')}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
       {message && <p className="reset-password-message">{message}</p>}
     </div>

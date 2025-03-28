@@ -86,7 +86,7 @@ const User = () => {
     <>
       <SideBar />
       <div className="user-container">
-        <h2 className="user-heading">Users List</h2>
+        <h2 className="user-heading">Team Member List</h2>
 
         <div className="filter-container">
           <label>Filter by Role:</label>
@@ -107,7 +107,7 @@ const User = () => {
             <table className="user-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>S No.</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>

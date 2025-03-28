@@ -77,12 +77,12 @@
   font-size: 14px;
 }
 
-.signup-link {
+.signup-lnk {
   color: #007bff;
   text-decoration: none;
 }
 
-.signup-link:hover {
+.signup-lnk:hover {
   text-decoration: underline;
 }
 

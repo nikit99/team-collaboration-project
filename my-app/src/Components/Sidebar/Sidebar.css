@@ -1,18 +1,26 @@
-.menu-item {
-    /* padding: 10px; */
-    transition: all 0.3s ease-in-out;
-    font-size: 14px;
+/* Ensure submenu opens downward instead of right */
+.pro-sidebar .pro-menu .pro-sub-menu {
+    position: relative;
+    left: 0;  /* Align dropdown with the parent */
+    width: 100%;
   }
   
-  .menu-item:hover {
-    font-size: 16px; 
-    transition: all 0.3s ease-in-out;
+  /* Style for submenu items */
+  .pro-sidebar .pro-menu-item  .pro-menu .pro-sub-menu .pro-menu-item {
+    padding: 8px 12px;
+    text-align: left;
+    background-color: whitesmoke; /* Match background */
+    transition: transform 0.3s ease, background-color 0.3s ease;
   }
   
-  .active-menu {
-    /* background-color: gray; */
-    color: blue;
-    /* font-weight: bold; */
-    /* border-radius: 5px; */
+  /* Prevent excessive padding */
+  .pro-sidebar .pro-menu .pro-sub-menu {
+    padding: 0;
+    margin: 0;
   }
-   
+  
+  /* Remove unwanted scrollbars */
+  .pro-sidebar {
+    overflow-y: hidden; 
+  }
+  

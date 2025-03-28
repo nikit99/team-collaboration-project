@@ -29,7 +29,7 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         """Validate before saving to remove invalid members."""
-        self.clean()  # Run validation
+        self.clean() 
         super().save(*args, **kwargs)
 
     def add_member(self, user):

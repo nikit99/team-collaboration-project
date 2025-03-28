@@ -1,10 +1,20 @@
-
-
 import React, { useEffect, useState } from 'react';
-import { getProjects, deleteProject, updateProjectStatus } from '../../api/projectsApi';
+import {
+  getProjects,
+  deleteProject,
+  updateProjectStatus,
+} from '../../api/projectsApi';
 import { getWorkspaces } from '../../api/workspaceApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaEdit, FaTrash, FaPlus, FaEye, FaSave } from 'react-icons/fa';
+import {
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaEye,
+  FaSave,
+  FaPen,
+  FaArrowLeft,
+} from 'react-icons/fa';
 import './ProjectDemo.css';
 import SideBar from '../../Components/Sidebar/Sidebar';
 
@@ -14,30 +24,36 @@ const Projects = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editingProjectId, setEditingProjectId] = useState(null);
-  const [updatedStatus, setUpdatedStatus] = useState("");
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [updatedStatus, setUpdatedStatus] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
   const navigate = useNavigate();
-  const { workspaceId, viewAll } = useParams(); // Get workspace ID from URL
+  const { workspaceId } = useParams(); // Get workspace ID from URL
 
   const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
-  const isAdminOrSuperAdmin = loggedInUser.role === 'admin' || loggedInUser.role === 'superadmin';
+  const isAdminOrSuperAdmin =
+    loggedInUser.role === 'admin' || loggedInUser.role === 'superadmin';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Workspace ID from URL:", workspaceId);
+        console.log('Workspace ID from URL:', workspaceId);
         const allProjects = await getProjects();
         const allWorkspaces = await getWorkspaces(); // Fetch workspaces
 
-        // Create a mapping of workspace ID to name
         const workspaceMap = {};
         allWorkspaces.forEach((ws) => {
           workspaceMap[ws.id] = ws.name;
         });
         setWorkspaces(workspaceMap);
 
-        if (workspaceId && workspaceId !== "undefined" && workspaceId !== "null") {
-          const workspaceProjects = allProjects.filter(proj => proj.workspace === Number(workspaceId));
+        if (
+          workspaceId &&
+          workspaceId !== 'undefined' &&
+          workspaceId !== 'null'
+        ) {
+          const workspaceProjects = allProjects.filter(
+            (proj) => proj.workspace === Number(workspaceId)
+          );
           setProjects(workspaceProjects);
         } else {
           setProjects(allProjects);
@@ -50,8 +66,6 @@ const Projects = () => {
     };
     fetchData();
   }, [workspaceId]);
-
-
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
@@ -87,24 +101,41 @@ const Projects = () => {
   };
 
   const filteredProjects =
-    filterStatus === "all" ? projects : projects.filter((project) => project.status === filterStatus);
+    filterStatus === 'all'
+      ? projects
+      : projects.filter((project) => project.status === filterStatus);
 
   return (
     <>
       <SideBar />
       <div className="projects-container">
-        <h2 className='projects-heading'>My Projects</h2>
-        
+        <div className="projects-header">
+        <h2 className="projects-heading">
+    {workspaceId && workspaces[workspaceId] ? `${workspaces[workspaceId]} Projects` : "My Projects"}
+  </h2>
+          {workspaceId &&
+            workspaceId !== 'undefined' &&
+            workspaceId !== 'null' && (
+              <FaArrowLeft
+                className="back-icon"
+                onClick={() => navigate('/workspaces')}
+              />
+            )}
+        </div>
+
         <div className="filter-container">
           <label>Filter by Status:</label>
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
             <option value="all">All</option>
             <option value="completed">Completed</option>
             <option value="in_progress">In Progress</option>
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
-        
+
         {loading ? (
           <p className="loading-message">Loading projects...</p>
         ) : error ? (
@@ -114,8 +145,7 @@ const Projects = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                {/* <th>Description</th> */}
-                <th>Workspace Name</th> {/* New Column */}
+                <th>Workspace Name</th>
                 <th>Created By</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -127,14 +157,16 @@ const Projects = () => {
               {filteredProjects.map((project) => (
                 <tr key={project.id}>
                   <td>{project.name}</td>
-                  {/* <td>{project.description}</td> */}
-                  <td>{workspaces[project.workspace] || "Unknown"}</td> {/* Display workspace name */}
+                  <td>{workspaces[project.workspace] || 'Unknown'}</td>
                   <td>{project.created_by}</td>
                   <td>{project.start_date}</td>
                   <td>{project.end_date}</td>
                   <td>
                     {editingProjectId === project.id ? (
-                      <select value={updatedStatus} onChange={handleStatusChange}>
+                      <select
+                        value={updatedStatus}
+                        onChange={handleStatusChange}
+                      >
                         <option value="completed">Completed</option>
                         <option value="in_progress">In Progress</option>
                         <option value="cancelled">Cancelled</option>
@@ -146,12 +178,30 @@ const Projects = () => {
                   {isAdminOrSuperAdmin && (
                     <td>
                       {editingProjectId === project.id ? (
-                        <FaSave title='save' className="save-icon" onClick={() => handleSaveStatus(project.id)} />
+                        <FaSave
+                          title="save"
+                          className="save-icon"
+                          onClick={() => handleSaveStatus(project.id)}
+                        />
                       ) : (
-                        <FaEdit title='update status' className="edit-icon" onClick={() => handleEditStatus(project.id, project.status)} />
+                        <FaEdit
+                          title="update status"
+                          className="edit-icon"
+                          onClick={() =>
+                            handleEditStatus(project.id, project.status)
+                          }
+                        />
                       )}
-                      <FaTrash title='delete' className="delete-icon" onClick={() => handleDelete(project.id)} />
-                      <FaEye title='edit' className="view-icon" onClick={() => navigate(`/edit-project/${project.id}`)} />
+                      <FaTrash
+                        title="delete"
+                        className="delete-icon"
+                        onClick={() => handleDelete(project.id)}
+                      />
+                      <FaPen
+                        title="edit project"
+                        className="view-icon"
+                        onClick={() => navigate(`/edit-project/${project.id}`)}
+                      />
                     </td>
                   )}
                 </tr>
@@ -160,8 +210,11 @@ const Projects = () => {
           </table>
         )}
         {isAdminOrSuperAdmin && (
-          <button className="add-project-btn" onClick={() => navigate('/projectForm')}>
-            <FaPlus /> Add Project
+          <button
+            className="add-project-btn"
+            onClick={() => navigate('/projectForm')}
+          >
+            <FaPlus /> Create Project
           </button>
         )}
       </div>

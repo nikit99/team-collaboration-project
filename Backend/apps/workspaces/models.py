@@ -18,23 +18,3 @@ class Workspace(models.Model):
 
 
 
-
-
-
-# Step 1: Define the Workspace Model
-# We need to create a new Django app for workspace management.
-
-# 1️⃣ Create a New App for Workspaces
-# Run the following command:   
-
-# 📌 Step 2: Define the Workspace Model (workspaces/models.py)
-# Now, let’s define a Workspace model where:
-
-# A workspace is created by an admin.
-# A workspace can have multiple users (Many-to-Many relation with User).
-
-# 📝 Explanation:
-
-# owner: A ForeignKey to User, meaning each workspace is owned by one admin.
-# members: A ManyToManyField to User, meaning a workspace can have multiple members.
-# created_at: Stores the creation date of the workspace.

@@ -1,4 +1,3 @@
-
 import { signup, signin } from '../api/authapi';
 
 export const handleAuth = async (type, formData, setError, navigate) => {
@@ -6,6 +5,9 @@ export const handleAuth = async (type, formData, setError, navigate) => {
     let response;
     if (type === 'signup') {
       response = await signup(formData);
+      console.log('Signup Response:', response);
+      navigate('/signin'); // Redirect to sign-in page after signup
+      return;
     } else if (type === 'signin') {
       response = await signin({
         email: formData.email,
@@ -19,20 +21,13 @@ export const handleAuth = async (type, formData, setError, navigate) => {
       localStorage.setItem('authToken', response.token);
       localStorage.setItem('user', JSON.stringify(response.user));
       console.log('User data stored in localStorage:', response.user);
-      navigate('/');
+      navigate('/'); // Navigate to home only after successful sign-in
     } else {
-      setError(
-        `${
-          type.charAt(0).toUpperCase() + type.slice(1)
-        } successful, but login failed!`
-      );
+      setError('Login failed!');
       navigate('/signin');
     }
   } catch (err) {
     console.error(`${type} Error:`, err);
-    console.log('Full error object:', err); 
-  
     setError(err.error || 'Something went wrong!');
   }
-  
 };

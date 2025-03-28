@@ -29,13 +29,12 @@ class WorkspaceListCreateView(generics.ListCreateAPIView):
             return Workspace.objects.filter(members=user)
       
 
-
         
     def perform_create(self, serializer):
        
         if self.request.user.role not in ["admin", "superadmin"]:
             raise PermissionDenied("Only admins can create workspaces")
-        serializer.save(owner=self.request.user)  # Set owner as the logged-in admin
+        serializer.save(owner=self.request.user) 
 
         
 class WorkspaceDetailView(generics.RetrieveUpdateDestroyAPIView):

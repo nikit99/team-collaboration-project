@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignUp from './Pages/SignUp/SignUp';
 import SignIn from './Pages/SignIn/SignIn';
 import Home from './Pages/Home/Home';
+import About from './Pages/AboutUs/About';
 import ResetPasswordRequest from './Pages/ResetPasswordRequest/ResetPasswordRequest';
 import ResetPassword from './Pages/ResetPassword/ResetPassword';
 import User from './Pages/Users/Users';
@@ -21,6 +22,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route
@@ -34,8 +36,13 @@ function App() {
         <Route path="/users" element={<User />} />
        
         <Route path="/workspaces" element={<Workspace />} />
+        <Route path="/workspaces/all" element={<Workspace />} />
+        <Route path="/workspaces/myworkspace" element={<Workspace />} />
+        <Route path="/workspaces/:viewType" component={Workspace} />
+
         <Route path="/create-workspace" element={<WorkspaceForm />} />
         <Route path="/edit-workspace/:id" element={<WorkspaceForm />} />
+
         
         
         <Route path="/Projects" element={<Projects />} />
@@ -43,6 +50,7 @@ function App() {
         <Route path="/edit-project/:id" element={<ProjectForm />} /> 
 
         <Route path="ProjectDemo" element={<ProjectDemo />} />
+        <Route path="ProjectDemo/all" element={<ProjectDemo />} />
         <Route path="/ProjectDemo/:workspaceId" element={<ProjectDemo />} />
        
       </Routes>
