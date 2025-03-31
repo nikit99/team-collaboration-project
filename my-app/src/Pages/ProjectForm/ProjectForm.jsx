@@ -72,8 +72,9 @@ const ProjectForm = () => {
                 workspace.members.map(memberId => getUserById(memberId))
               );
               setUsers(memberDetails);
+              const projectMembers = memberDetails.filter(member => projectData.members.includes(member.id));
               setSelectedMembers(
-                memberDetails.map(member => ({
+                projectMembers.map(member => ({
                   value: member.id,
                   label: `${member.name} (${member.email})`,
                 }))

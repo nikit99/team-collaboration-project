@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://127.0.0.1:8000/workspaces/';
-const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+const token = localStorage.getItem('authToken'); 
 const headers = { Authorization: `Token ${token}` };
 
 // Get all workspaces
 export const getWorkspaces = async () => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken');
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.get(BASE_URL, { headers });
@@ -21,7 +21,7 @@ export const getWorkspaces = async () => {
 
 export const createWorkspace = async (workspaceData) => {
   try {
-    const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.post(BASE_URL, workspaceData, { headers });
@@ -35,7 +35,7 @@ export const createWorkspace = async (workspaceData) => {
 
 export const updateWorkspace = async (id, workspaceData) => {
   try {
-    const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.put(`${BASE_URL}${id}/`, workspaceData, {
@@ -51,7 +51,7 @@ export const updateWorkspace = async (id, workspaceData) => {
 
 export const deleteWorkspace = async (id) => {
   try {
-    const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+    const token = localStorage.getItem('authToken');
     const headers = { Authorization: `Token ${token}` };
 
     await axios.delete(`${BASE_URL}${id}/`, { headers });
@@ -64,7 +64,7 @@ export const deleteWorkspace = async (id) => {
 
 export const getWorkspaceById = async (id) => {
   try {
-    const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.get(`${BASE_URL}${id}/`, { headers });

@@ -36,5 +36,6 @@ urlpatterns = [
     path('auth/', include('apps.auth_app.urls')),
     path('workspaces/', include('apps.workspaces.urls')), 
     path('projects/', include('apps.projects.urls')), 
+    path('tasks/', include('apps.tasks.urls')), 
 ]
 

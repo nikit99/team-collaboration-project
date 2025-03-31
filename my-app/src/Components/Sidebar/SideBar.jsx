@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Link, useLocation } from 'react-router-dom';
-import './Sidebar.css'; 
+// import './Sidebar.css'; 
 
 const SideBar = () => {
   const location = useLocation();
@@ -71,6 +71,13 @@ const SideBar = () => {
           className={location.pathname === '/ProjectDemo' ? 'active-menu' : 'menu-item'}
         >
           Projects 
+        </MenuItem>
+      
+        <MenuItem 
+          component={<Link to="/Tasks" />} 
+          className={location.pathname === '/Tasks' ? 'active-menu' : 'menu-item'}
+        >
+          Tasks
         </MenuItem>
       </Menu>
     </Sidebar>

@@ -16,6 +16,9 @@ import ProjectForm from './Pages/ProjectForm/ProjectForm';
 
 import ProjectDemo from './Pages/Projects Demo/ProjectDemo';
 
+import TaskForm from './Pages/TasksForm/TaskForm';
+import Tasks from './Pages/Tasks/Tasks';
+
 function App() {
   return (
     <Router>
@@ -52,6 +55,17 @@ function App() {
         <Route path="ProjectDemo" element={<ProjectDemo />} />
         <Route path="ProjectDemo/all" element={<ProjectDemo />} />
         <Route path="/ProjectDemo/:workspaceId" element={<ProjectDemo />} />
+
+
+        <Route path="ProjectDemo" element={<ProjectDemo />} />
+        <Route path="ProjectDemo/all" element={<ProjectDemo />} />
+        <Route path="/ProjectDemo/:workspaceId" element={<ProjectDemo />} />
+
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/tasks/:projectId" element={<Tasks />} />
+        <Route path="/taskForm" element={<TaskForm />} />
+        <Route path="/taskForm/:id" element={<TaskForm />} />
+        <Route path="/edit-task/:id" element={<TaskForm />} />
        
       </Routes>
     </Router>

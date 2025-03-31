@@ -70,7 +70,7 @@ export const getUserById = async (userId) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the token like in getWorkspaceById
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.delete(`${API_BASE_URL}/users/${userId}/delete/`, { headers });

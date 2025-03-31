@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://127.0.0.1:8000/projects/';
-const token = localStorage.getItem('authToken'); // Assuming token is stored in localStorage
+// const BASE_URL = import.meta.env.PROJECTS_API_URL;
+const token = localStorage.getItem('authToken'); 
 const headers = { Authorization: `Token ${token}` };
 
 
 export const getProjects = async () => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.get(BASE_URL, { headers });
@@ -20,7 +21,7 @@ export const getProjects = async () => {
 
 export const createProject = async (projectData) => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.post(BASE_URL, projectData, { headers });
@@ -33,7 +34,7 @@ export const createProject = async (projectData) => {
 
 export const updateProject = async (id, projectData) => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.put(`${BASE_URL}${id}/`, projectData, { headers });
@@ -46,7 +47,7 @@ export const updateProject = async (id, projectData) => {
 
 export const deleteProject = async (id) => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     await axios.delete(`${BASE_URL}${id}/`, { headers });
@@ -60,7 +61,7 @@ export const deleteProject = async (id) => {
 
 export const getProjectById = async (id) => {
   try {
-    const token = localStorage.getItem('authToken'); // Fetch the latest token
+    const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
     const response = await axios.get(`${BASE_URL}${id}/`, { headers });

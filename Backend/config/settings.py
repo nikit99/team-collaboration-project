@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
+    'apps.tasks',
 ]
 
 AUTH_USER_MODEL = "auth_app.User" #use custom user model

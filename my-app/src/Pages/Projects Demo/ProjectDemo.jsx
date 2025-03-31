@@ -110,9 +110,11 @@ const Projects = () => {
       <SideBar />
       <div className="projects-container">
         <div className="projects-header">
-        <h2 className="projects-heading">
-    {workspaceId && workspaces[workspaceId] ? `${workspaces[workspaceId]} Projects` : "My Projects"}
-  </h2>
+          <h2 className="projects-heading">
+            {workspaceId && workspaces[workspaceId]
+              ? `${workspaces[workspaceId]} Projects`
+              : 'My Projects'}
+          </h2>
           {workspaceId &&
             workspaceId !== 'undefined' &&
             workspaceId !== 'null' && (
@@ -134,6 +136,15 @@ const Projects = () => {
             <option value="in_progress">In Progress</option>
             <option value="cancelled">Cancelled</option>
           </select>
+
+          {isAdminOrSuperAdmin && (
+            <button
+              className="add-project-btn"
+              onClick={() => navigate('/projectForm')}
+            >
+              <FaPlus /> Create Project
+            </button>
+          )}
         </div>
 
         {loading ? (
@@ -141,81 +152,76 @@ const Projects = () => {
         ) : error ? (
           <p className="error">{error}</p>
         ) : (
-          <table className="projects-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Workspace Name</th>
-                <th>Created By</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                {isAdminOrSuperAdmin && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProjects.map((project) => (
-                <tr key={project.id}>
-                  <td>{project.name}</td>
-                  <td>{workspaces[project.workspace] || 'Unknown'}</td>
-                  <td>{project.created_by}</td>
-                  <td>{project.start_date}</td>
-                  <td>{project.end_date}</td>
-                  <td>
-                    {editingProjectId === project.id ? (
-                      <select
-                        value={updatedStatus}
-                        onChange={handleStatusChange}
-                      >
-                        <option value="completed">Completed</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
-                    ) : (
-                      project.status
-                    )}
-                  </td>
-                  {isAdminOrSuperAdmin && (
-                    <td>
-                      {editingProjectId === project.id ? (
-                        <FaSave
-                          title="save"
-                          className="save-icon"
-                          onClick={() => handleSaveStatus(project.id)}
-                        />
-                      ) : (
-                        <FaEdit
-                          title="update status"
-                          className="edit-icon"
-                          onClick={() =>
-                            handleEditStatus(project.id, project.status)
-                          }
-                        />
-                      )}
-                      <FaTrash
-                        title="delete"
-                        className="delete-icon"
-                        onClick={() => handleDelete(project.id)}
-                      />
-                      <FaPen
-                        title="edit project"
-                        className="view-icon"
-                        onClick={() => navigate(`/edit-project/${project.id}`)}
-                      />
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        {isAdminOrSuperAdmin && (
-          <button
-            className="add-project-btn"
-            onClick={() => navigate('/projectForm')}
-          >
-            <FaPlus /> Create Project
-          </button>
+            <div className="table-container">
+  <table className="projects-table">
+    <thead>
+      <tr >
+        <th>Name</th>
+        <th>Workspace Name</th>
+        <th>Created By</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        {isAdminOrSuperAdmin && <th>Actions</th>}
+      </tr>
+    </thead>
+  </table>
+  <div className="table-body-container">
+    <table className="projects-table">
+      <tbody>
+        {filteredProjects.map((project) => (
+          <tr key={project.id}  className="clickable-row"
+  onClick={() => navigate(`/tasks/${project.id}`)}>
+            <td>{project.name}</td>
+            <td>{workspaces[project.workspace] || 'Unknown'}</td>
+            <td>{project.created_by}</td>
+            <td>{project.start_date}</td>
+            <td>{project.end_date}</td>
+            <td>
+              {editingProjectId === project.id ? (
+                <select value={updatedStatus} onChange={handleStatusChange}>
+                  <option value="completed">Completed</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              ) : (
+                project.status
+              )}
+            </td>
+            {isAdminOrSuperAdmin && (
+              <td>
+                {editingProjectId === project.id ? (
+                  <FaSave
+                    title="save"
+                    className="save-icon"
+                    onClick={() => handleSaveStatus(project.id)}
+                  />
+                ) : (
+                  <FaEdit
+                    title="update status"
+                    className="edit-icon"
+                    onClick={() => handleEditStatus(project.id, project.status)}
+                  />
+                )}
+                <FaTrash
+                  title="delete"
+                  className="delete-icon"
+                  onClick={() => handleDelete(project.id)}
+                />
+                <FaPen
+                  title="edit project"
+                  className="view-icon"
+                  onClick={() => navigate(`/edit-project/${project.id}`)}
+                />
+              </td>
+            )}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
         )}
       </div>
     </>
