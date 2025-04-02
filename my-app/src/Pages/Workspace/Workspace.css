@@ -1,11 +1,14 @@
 .workspace-container {
     /* max-width: 1000px; */
-    /* margin: auto; */
-    margin-left: 16pc;
+    margin: auto;
+    /* margin-left: 16pc; */
     padding: 20px;
-    background-color: #f4f4f9;
+    /* background-color: #f4f4f9; */
+    background-color: white;
+    /* background-color: #F9FAFB; */
     border-radius: 10px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 100px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
   
   .workspace-grid {
@@ -15,6 +18,12 @@
     /* justify-content: center; */
   }
   
+  .workspace-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds equal spacing between all child elements */
+  }
+
   .workspace-card {
     width: 260px;
     min-height: 180px;

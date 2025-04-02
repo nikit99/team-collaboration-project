@@ -1,0 +1,37 @@
+
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.main-content-wrapper {
+    display: flex;
+    flex: 1;
+    margin-top: 60px;
+}
+
+.content-area {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px; 
+    transition: margin-left 0.3s ease;
+    min-height: calc(100vh - 60px);
+    overflow: auto;
+    background-color: #F9FAFB;
+}
+
+.content-area.collapsed {
+    margin-left: 60px; 
+}
+
+.full-width {
+    width: 100%;
+}
+
+.content-area.full {
+    margin-left: 0; 
+    width: 100%;
+}

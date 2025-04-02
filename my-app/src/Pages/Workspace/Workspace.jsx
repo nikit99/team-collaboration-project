@@ -12,7 +12,7 @@ const Workspace = () => {
   const navigate = useNavigate();
 
   const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
-  const isSuperAdmin = loggedInUser.role === 'superadmin';
+  const isSuperAdmin = loggedInUser.role === 'superadmin' || loggedInUser.role === 'admin';
   const isUser = loggedInUser.role === 'user';
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Workspace = () => {
 
   return (
     <>
-      <SideBar />
+      {/* <SideBar /> */}
       <div className="workspace-container">
         <h2 className='workspace-heading'>My Workspaces</h2>
 

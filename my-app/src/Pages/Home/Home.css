@@ -1,40 +1,17 @@
-/* .home-container {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    width: 100%; 
-  } */
-  /* .home-container {
-    background-image: url('/public/wallpaper.jpg');=
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh; 
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white; 
-    text-align: center;
-  }
-   */
 
    .home-container {
-    /* background-image: url('/public/wallpaper.jpg');  */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* color: white; */
     text-align: center;
   }
   
   .home-content {
-    /* background: rgba(0, 0, 0, 0.6);  */
     padding: 2rem;
     border-radius: 10px;
   }
@@ -56,7 +33,7 @@
   }
   
   .signin-btn {
-    background-color: #008080; /* Teal color matching header & footer */
+    background-color: #008080; 
     color: white;
     padding: 0.7rem 1.5rem;
     font-size: 1rem;
@@ -97,3 +74,4 @@
     color: #006666; 
   }
   
+   

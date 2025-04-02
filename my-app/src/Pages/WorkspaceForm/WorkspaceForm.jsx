@@ -78,7 +78,7 @@ const WorkspaceForm = () => {
 
   return (
     <>
-    <SideBar/>
+    {/* <SideBar/> */}
     <div className="workspaceForm-container">
       <div className="workspaceForm-card">
         <h2 className="workspaceForm-title">{id ? 'Edit Workspace' : 'Create Workspace'}</h2>

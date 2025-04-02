@@ -1,24 +1,95 @@
+.sidebar {
+    background-color: white;
+    color: black;
+    width: 250px;
+    height: calc(100vh - 60px);
+    position: fixed;
+    top: 60px;
+    left: 0;
+    transition: width 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 999;
+}
+  
+.sidebar.collapsed {
+    width: 60px;
+}
+  
+.sidebar-menu {
+    padding: 20px 0;
+}
+  
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+  
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+  
+.menu-item:hover .menu-icon {
+    transform: scale(1.1);
+}
+  
+.menu-item:hover .menu-label {
+    font-weight: 500;
+    transform: translateX(5px);
+}
+  
+.menu-item.active {
+    background-color: #e0f2f1;
+    border-left: 4px solid #008080;
+}
+  
+.menu-icon {
+    font-size: 1.2rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+    color: #004195;
+    transition: all 0.3s ease;
+    transform-origin: center center;
+}
 
-.pro-sidebar .pro-menu .pro-sub-menu {
-    position: relative;
-    left: 0;  
-    width: 100%;
-  }
+/* Click animation */
+.menu-icon.click-animation {
+    animation: wiggle 1.0s ease;
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    50% {
+        transform: rotate(10deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
+}
   
- 
-  .pro-sidebar .pro-menu-item  .pro-menu .pro-sub-menu .pro-menu-item {
-    padding: 8px 12px;
-    text-align: left;
-    background-color: whitesmoke; /* Match background */
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
+.menu-label {
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
   
-  .pro-sidebar .pro-menu .pro-sub-menu {
-    padding: 0;
-    margin: 0;
-  }
+.sidebar.collapsed .menu-label {
+    display: none;
+}
   
-  .pro-sidebar {
-    overflow-y: hidden; 
-  }
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px 0;
+}
   
+.sidebar.collapsed .menu-icon {
+    margin-right: 0;
+}

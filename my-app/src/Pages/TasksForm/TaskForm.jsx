@@ -210,7 +210,7 @@ const TaskForm = () => {
 
   return (
     <>
-      <SideBar />
+      {/* <SideBar /> */}
       <div className="taskForm-container">
         <div className="taskForm-card">
           <h2 className="taskForm-title">{id ? 'Edit Task' : 'Create Task'}</h2>

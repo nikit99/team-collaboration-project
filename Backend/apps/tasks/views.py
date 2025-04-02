@@ -10,18 +10,38 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import action
 
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from rest_framework.pagination import PageNumberPagination
+
+
 class TaskViewSet(viewsets.ModelViewSet):
+    # queryset = Task.objects.all()
+    # serializer_class = TaskSerializer
+    # permission_classes = [IsAuthenticated]
+
+    # def perform_create(self, serializer):
+    #     """Automatically assign the project owner as the task owner."""
+    #     project = serializer.validated_data['project']
+    #     if not (self.request.user == project.created_by or self.request.user.role == "superadmin"):
+    #         raise PermissionDenied("Only the project owner or superadmin can create tasks.")
+
+    #     task = serializer.save(owner=project.created_by)
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        """Automatically assign the project owner as the task owner."""
-        project = serializer.validated_data['project']
-        if not (self.request.user == project.created_by or self.request.user.role == "superadmin"):
-            raise PermissionDenied("Only the project owner or superadmin can create tasks.")
-
-        task = serializer.save(owner=project.created_by)
+    # pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'project': ['exact'],
+        'project__workspace': ['exact'],  # Filter by workspace ID
+        'project__name': ['exact', 'icontains'],  # Filter by project name
+        'status': ['exact'],
+        'owner': ['exact'],
+        'due_date': ['gte', 'lte', 'exact'],  # Greater than, less than, or exact date
+    }
+    ordering_fields = ['name', 'due_date', 'created_at', 'status']
+    ordering = ['-created_at']  # Default ordering (newest first)
 
     def get_queryset(self):
         user = self.request.user

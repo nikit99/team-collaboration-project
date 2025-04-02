@@ -154,7 +154,7 @@ const ProjectForm = () => {
   return (
     <>
     
-    <SideBar/>
+    {/* <SideBar/> */}
     <div className="projectForm-container">
       <div className="projectForm-card">
         <h2 className="projectForm-title">{id ? 'Edit Project' : 'Create Project'}</h2>
