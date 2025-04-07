@@ -45,17 +45,54 @@ export const resetPassword = async (userId, token, passwords) => {
 };
 
 
-
-export const getUsers = async () => {
+export const getUsers = async (filters = {}, page = 1, pageSize = 10, noPagination = false) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/users/`);
-    console.log(response);
-    return response.data;
+    const params = new URLSearchParams();
+    
+    
+    if (filters.role && filters.role !== 'all') {
+      params.append('role', filters.role);
+    }
+    if (filters.search) {
+      params.append('search', filters.search);
+    }
+    if (filters.ordering) {
+      params.append('ordering', filters.ordering);
+    }
+    
+    if (noPagination) {
+      params.append('no_page', 'true');
+    } else {
+      params.append('page', page);
+      params.append('page_size', pageSize);
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/users/`, { params });
+    
+    if (noPagination) {
+      return {
+        users: response.data,  
+        pagination: null
+      };
+    }
+    
+    return {
+      users: response.data.results,
+      pagination: {
+        total: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous,
+        currentPage: page,
+        totalPages: Math.ceil(response.data.count / pageSize),
+        pageSize: pageSize
+      }
+    };
   } catch (error) {
     console.error('Error fetching users:', error);
-    throw error;
+    throw error.response?.data || error.message;
   }
 };
+
 
 
 export const getUserById = async (userId) => {
@@ -64,7 +101,7 @@ export const getUserById = async (userId) => {
     return response.data;
   } catch (error) {
     console.error(`Error fetching user ${userId}:`, error.response?.data || error.message);
-    return null; // Return null if the user is not found
+    return null; 
   }
 };
 

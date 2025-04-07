@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { handleAuth } from '../../utils/authHandler';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './SignUp.css';
 
 const Signup = () => {
@@ -10,12 +12,10 @@ const Signup = () => {
     email: '',
     password: '',
     confirm_password: '',
-    // role: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,26 +25,63 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirm_password) {
-      setError('Passwords do not match!');
+      toast.error('Passwords do not match!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
-    await handleAuth('signup', formData, setError, navigate);
+    
+    await handleAuth('signup', formData, (errorMsg) => {
+      toast.error(errorMsg, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }, navigate);
   };
 
   return (
     <div className="signup-container">
+      <ToastContainer />
       <div className="signup-card">
         <h2 className="signup-title">Sign Up</h2>
-        {error && <p className="signup-error">{error}</p>}
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="input-group">
             <label htmlFor="name" className="signup-label">Full Name</label>
-            <input type="text" id="name" placeholder="Enter your full name"  name="name" value={formData.name} onChange={handleChange} required className="signup-input" />
+            <input 
+              type="text" 
+              id="name" 
+              placeholder="Enter your full name"  
+              name="name" 
+              value={formData.name} 
+              onChange={handleChange} 
+              required 
+              className="signup-input" 
+            />
           </div>
 
           <div className="input-group">
             <label htmlFor="email" className="signup-label">Email</label>
-            <input type="email" id="email" placeholder="Enter your email"  name="email" value={formData.email} onChange={handleChange} required className="signup-input" />
+            <input 
+              type="email" 
+              id="email" 
+              placeholder="Enter your email"  
+              name="email" 
+              value={formData.email} 
+              onChange={handleChange} 
+              required 
+              className="signup-input" 
+            />
           </div>
 
           <div className="input-group input-container">
@@ -84,15 +121,6 @@ const Signup = () => {
               <FaEye className="eye-icons" onClick={() => setShowConfirmPassword(true)} />
             )}
           </div>
-
-          {/* <div className="input-group">
-            <label htmlFor="role" className="signup-label">Role</label>
-            <select id="role" name="role" placeholder="Select your role" value={formData.role} onChange={handleChange} required className="signup-input">
-              <option value="">Select Role</option>
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div> */}
 
           <button type="submit" className="signup-button">Sign Up</button>
         </form>

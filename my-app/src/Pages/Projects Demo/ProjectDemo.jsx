@@ -16,10 +16,14 @@ import {
   FaArrowLeft,
   FaSort,
   FaSortUp,
-  FaSortDown
+  FaSortDown,
+  FaChevronLeft,
+  FaChevronRight
 } from 'react-icons/fa';
 import './ProjectDemo.css';
 import SideBar from '../../Components/Sidebar/Sidebar';
+import Pagination from '../../Components/Pagination/Pagination';
+import Select from 'react-select';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -28,13 +32,19 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [updatedStatus, setUpdatedStatus] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterWorkspace, setFilterWorkspace] = useState('all');
-  const [sortConfig, setSortConfig] = useState({
-    key: 'end_date',
-    direction: 'ascending'
+  const [filters, setFilters] = useState({
+    status: 'all',
+    workspace: 'all',
+    search: '',
+    ordering: '-end_date' 
   });
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 10,
+    total: 0,
+    totalPages: 1
+  });
+
   const navigate = useNavigate();
   const { workspaceId } = useParams();
 
@@ -45,23 +55,28 @@ const Projects = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allProjects = await getProjects();
-        const allWorkspaces = await getWorkspaces();
+        setLoading(true);
+        
+        // If workspaceId is provided in URL, override the workspace filter
+        const effectiveFilters = {
+          ...filters,
+          ...(workspaceId && workspaceId !== 'undefined' && workspaceId !== 'null' 
+            ? { workspace: workspaceId } 
+            : {})
+        };
+
+        const [projectsData, workspacesData] = await Promise.all([
+          getProjects(effectiveFilters, pagination.currentPage, pagination.pageSize),
+          getWorkspaces(1, 1000) // Fetch all workspaces with a large page size
+        ]);
 
         const workspaceMap = {};
-        allWorkspaces.forEach((ws) => {
+        workspacesData.workspaces.forEach((ws) => {
           workspaceMap[ws.id] = ws.name;
         });
         setWorkspaces(workspaceMap);
-
-        if (workspaceId && workspaceId !== 'undefined' && workspaceId !== 'null') {
-          const workspaceProjects = allProjects.filter(
-            (proj) => proj.workspace === Number(workspaceId)
-          );
-          setProjects(workspaceProjects);
-        } else {
-          setProjects(allProjects);
-        }
+        setProjects(projectsData.projects);
+        setPagination(projectsData.pagination);
       } catch (err) {
         setError(err.message || 'Error fetching projects.');
       } finally {
@@ -69,13 +84,47 @@ const Projects = () => {
       }
     };
     fetchData();
-  }, [workspaceId]);
+  }, [filters, workspaceId, pagination.currentPage]);
+
+  const handleFilterChange = (name, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+  };
+
+  const handleSort = (key) => {
+    const newOrdering = filters.ordering === key ? `-${key}` : key;
+    handleFilterChange('ordering', newOrdering);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination(prev => ({ ...prev, currentPage: newPage }));
+    }
+  };
+
+  const getSortIcon = (key) => {
+    if (!filters.ordering.includes(key)) return <FaSort />;
+    return filters.ordering.startsWith('-') ? <FaSortDown /> : <FaSortUp />;
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
-      const success = await deleteProject(id);
-      if (success) {
-        setProjects(projects.filter((project) => project.id !== id));
+      try {
+        await deleteProject(id);
+        // Refresh projects to maintain pagination
+        const { projects: updatedProjects } = await getProjects(
+          filters, 
+          pagination.currentPage, 
+          pagination.pageSize
+        );
+        setProjects(updatedProjects);
+      } catch (error) {
+        console.error('Error deleting project:', error);
+        alert('Failed to delete project!');
       }
     }
   };
@@ -104,44 +153,6 @@ const Projects = () => {
     }
   };
 
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return <FaSort />;
-    return sortConfig.direction === 'ascending' ? <FaSortUp /> : <FaSortDown />;
-  };
-
-  const sortedProjects = [...projects].sort((a, b) => {
-    if (sortConfig.key === 'end_date') {
-      const dateA = new Date(a.end_date);
-      const dateB = new Date(b.end_date);
-      if (sortConfig.direction === 'ascending') {
-        return dateA - dateB;
-      }
-      return dateB - dateA;
-    }
-    return 0;
-  });
-
-  const filteredProjects = sortedProjects
-    .filter((project) =>
-      filterStatus === 'all' ? true : project.status === filterStatus
-    )
-    .filter((project) =>
-      filterWorkspace === 'all' 
-        ? true 
-        : project.workspace === Number(filterWorkspace)
-    )
-    .filter((project) =>
-      project.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
   const formatStatus = (status) => {
     const statusMap = {
       'completed': 'Completed',
@@ -151,8 +162,15 @@ const Projects = () => {
     return statusMap[status] || status;
   };
 
+  const statusOptions = [
+    { value: 'all', label: 'All' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'in_progress', label: 'In Progress' },
+    { value: 'cancelled', label: 'Cancelled' }
+  ];
+
   return (
-    <>
+    <div className="projects-page">
       <div className="projects-container">
         <div className="projects-header">
           <h2 className="projects-heading">
@@ -170,11 +188,11 @@ const Projects = () => {
             )}
         </div>
 
-        <div className="filter-container">
+        {/* <div className="filter-container">
           <label>Filter by Status:</label>
           <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
+            value={filters.status}
+            onChange={(e) => handleFilterChange('status', e.target.value)}
           >
             <option value="all">All</option>
             <option value="completed">Completed</option>
@@ -184,8 +202,9 @@ const Projects = () => {
 
           <label>Workspace:</label>
           <select
-            value={filterWorkspace}
-            onChange={(e) => setFilterWorkspace(e.target.value)}
+            value={filters.workspace}
+            onChange={(e) => handleFilterChange('workspace', e.target.value)}
+            disabled={!!workspaceId} // Disable if workspaceId is in URL
           >
             <option value="all">All</option>
             {Object.entries(workspaces).map(([id, name]) => (
@@ -200,8 +219,8 @@ const Projects = () => {
             type="text"
             className="search-input"
             placeholder="Enter Project Name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={filters.search}
+            onChange={(e) => handleFilterChange('search', e.target.value)}
           />
 
           {isAdminOrSuperAdmin && (
@@ -212,121 +231,238 @@ const Projects = () => {
               <FaPlus /> New
             </button>
           )}
-        </div>
+        </div> */}
+        <div className="filter-container">
+  <label>Filter by Status:</label>
+  <Select
+    options={statusOptions}
+    value={statusOptions.find(option => option.value === filters.status)}
+    onChange={(selectedOption) => handleFilterChange('status', selectedOption.value)}
+    className="react-select-container"
+    classNamePrefix="react-select"
+    isSearchable={false}
+    styles={{
+      control: (base) => ({
+        ...base,
+        minHeight: '38px',
+        height: '38px',
+        width: '150px',
+        fontSize: '14px',
+        border: '1px solid #ced4da',
+        boxShadow: 'none',
+      }),
+      dropdownIndicator: (base) => ({
+        ...base,
+        padding: '4px'
+      }),
+      valueContainer: (base) => ({
+        ...base,
+        padding: '0 8px',
+        height: '36px'
+      }),
+      singleValue: (base) => ({
+        ...base,
+        fontSize: '14px'
+      }),
+      option: (base) => ({
+        ...base,
+        fontSize: '14px',
+        padding: '8px 12px'
+      })
+    }}
+  />
+
+  <label>Workspace:</label>
+  <Select
+    options={[
+      { value: 'all', label: 'All' },
+      ...Object.entries(workspaces).map(([id, name]) => ({
+        value: id,
+        label: name
+      }))
+    ]}
+    value={
+      filters.workspace === 'all' 
+        ? { value: 'all', label: 'All' }
+        : { value: filters.workspace, label: workspaces[filters.workspace] || 'All' }
+    }
+    onChange={(selectedOption) => handleFilterChange('workspace', selectedOption.value)}
+    className="react-select-container"
+    classNamePrefix="react-select"
+    isDisabled={!!workspaceId}
+    styles={{
+      control: (base) => ({
+        ...base,
+        minHeight: '38px',
+        height: '38px',
+        width: '150px',
+        fontSize: '14px',
+        border: '1px solid #ced4da',
+        boxShadow: 'none',
+      }),
+      dropdownIndicator: (base) => ({
+        ...base,
+        padding: '4px'
+      }),
+      valueContainer: (base) => ({
+        ...base,
+        padding: '0 8px',
+        height: '36px'
+      }),
+      singleValue: (base) => ({
+        ...base,
+        fontSize: '14px'
+      }),
+      option: (base) => ({
+        ...base,
+        fontSize: '14px',
+        padding: '8px 12px'
+      })
+    }}
+  />
+
+  <label>Search:</label>
+  <input
+    type="text"
+    className="search-input"
+    placeholder="Enter Project Name"
+    value={filters.search}
+    onChange={(e) => handleFilterChange('search', e.target.value)}
+  />
+
+  {isAdminOrSuperAdmin && (
+    <button
+      className="add-project-btn"
+      onClick={() => navigate('/projectForm')}
+    >
+      <FaPlus /> New
+    </button>
+  )}
+</div>
 
         {loading ? (
           <p className="loading-message">Loading projects...</p>
         ) : error ? (
           <p className="error">{error}</p>
+        ) : projects.length === 0 ? (
+          <p className="no-results">No projects found matching your criteria</p>
         ) : (
-          <div className="table-container">
-            <table className="projects-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Workspace Name</th>
-                  <th>Created By</th>
-                  <th>Start Date</th>
-                  <th>
-                    <div 
-                      className="sortable-header" 
-                      onClick={() => requestSort('end_date')}
-                    >
-                      End Date
-                      <span className="sort-icon">
-                        {getSortIcon('end_date')}
-                      </span>
-                    </div>
-                  </th>
-                  <th>Status</th>
-                  {isAdminOrSuperAdmin && <th>Actions</th>}
-                </tr>
-              </thead>
-            </table>
-            <div className="table-body-container">
+          <>
+            <div className="table-container">
               <table className="projects-table">
-                <tbody>
-                  {filteredProjects.map((project) => (
-                    <tr
-                      key={project.id}
-                      className="clickable-row"
-                      onClick={(e) => {
-                        if (!e.target.closest('.action-button')) {
-                          navigate(`/tasks/${project.id}`);
-                        }
-                      }}
-                    >
-                      <td>{project.name}</td>
-                      <td>{workspaces[project.workspace] || 'Unknown'}</td>
-                      <td>{project.created_by}</td>
-                      <td>{project.start_date}</td>
-                      <td>{project.end_date}</td>
-                      <td>
-                        {editingProjectId === project.id ? (
-                          <select
-                            value={updatedStatus}
-                            onChange={handleStatusChange}
-                            className="action-button"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <option value="completed">Completed</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="cancelled">Cancelled</option>
-                          </select>
-                        ) : (
-                          <span className={`status-badge status-${project.status}`}>
-                            {formatStatus(project.status)}
-                          </span>
-                        )}
-                      </td>
-                      {isAdminOrSuperAdmin && (
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Workspace Name</th>
+                    <th>Created By</th>
+                    <th>Start Date</th>
+                    <th>
+                      <div 
+                        className="sortable-header" 
+                        onClick={() => handleSort('end_date')}
+                      >
+                        End Date
+                        <span className="sort-icon">
+                          {getSortIcon('end_date')}
+                        </span>
+                      </div>
+                    </th>
+                    <th>Status</th>
+                    {isAdminOrSuperAdmin && <th>Actions</th>}
+                  </tr>
+                </thead>
+              </table>
+              <div className="table-body-container">
+                <table className="projects-table">
+                  <tbody>
+                    {projects.map((project) => (
+                      <tr
+                        key={project.id}
+                        className="clickable-row"
+                        onClick={(e) => {
+                          if (!e.target.closest('.action-button')) {
+                            navigate(`/tasks/${project.id}`);
+                          }
+                        }}
+                      >
+                        <td>{project.name}</td>
+                        <td>{workspaces[project.workspace] || 'Unknown'}</td>
+                        <td>{project.created_by}</td>
+                        <td>{project.start_date}</td>
+                        <td>{project.end_date}</td>
                         <td>
                           {editingProjectId === project.id ? (
-                            <FaSave
-                              title="save"
-                              className="save-icon action-button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleSaveStatus(project.id);
-                              }}
-                            />
+                            <select
+                              value={updatedStatus}
+                              onChange={handleStatusChange}
+                              className="action-button"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <option value="completed">Completed</option>
+                              <option value="in_progress">In Progress</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
                           ) : (
-                            <FaEdit
-                              title="update status"
-                              className="edit-icon action-button"
+                            <span className={`status-badge status-${project.status}`}>
+                              {formatStatus(project.status)}
+                            </span>
+                          )}
+                        </td>
+                        {isAdminOrSuperAdmin && (
+                          <td>
+                            {editingProjectId === project.id ? (
+                              <FaSave
+                                title="save"
+                                className="save-icon action-button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSaveStatus(project.id);
+                                }}
+                              />
+                            ) : (
+                              <FaEdit
+                                title="update status"
+                                className="edit-icon action-button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEditStatus(project.id, project.status);
+                                }}
+                              />
+                            )}
+                            <FaTrash
+                              title="delete"
+                              className="delete-icon action-button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleEditStatus(project.id, project.status);
+                                handleDelete(project.id);
                               }}
                             />
-                          )}
-                          <FaTrash
-                            title="delete"
-                            className="delete-icon action-button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(project.id);
-                            }}
-                          />
-                          <FaPen
-                            title="edit project"
-                            className="view-icon action-button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/edit-project/${project.id}`);
-                            }}
-                          />
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                            <FaPen
+                              title="edit project"
+                              className="view-icon action-button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/edit-project/${project.id}`);
+                              }}
+                            />
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+
+           <Pagination
+             currentPage={pagination.currentPage}
+             totalPages={pagination.totalPages}
+             onPageChange={handlePageChange}
+           />
+          </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

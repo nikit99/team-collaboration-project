@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
-
 import { createTask, getTaskById, updateTask } from '../../api/taskApi';
 import { getProjects } from '../../api/projectsApi';
 import './TaskForm.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 import { getWorkspaces } from '../../api/workspaceApi';
-import { getWorkspaceById } from '../../api/workspaceApi';
-import { getUserById } from '../../api/authapi';
-
+import { getUsers, getUserById } from '../../api/authapi';
 
 const TaskForm = () => {
   const { id } = useParams();
@@ -30,7 +26,8 @@ const TaskForm = () => {
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const statusOptions = [
     { value: 'to_do', label: 'To Do' },
@@ -38,117 +35,224 @@ const TaskForm = () => {
     { value: 'completed', label: 'Completed' },
   ];
 
+  const fetchWorkspaces = useCallback(async () => {
+    try {
+      const workspacesResponse = await getWorkspaces(1, 1000);
+      const workspaceList = workspacesResponse.workspaces || workspacesResponse;
+      setWorkspaces(Array.isArray(workspaceList) ? workspaceList : []);
+    } catch (err) {
+      console.error('Error fetching workspaces:', err);
+      setError('Error loading workspaces. Please try again.');
+    }
+  }, []);
+
+  const fetchProjects = useCallback(async (workspaceId) => {
+    if (!workspaceId) {
+      setProjects([]);
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const projectsResponse = await getProjects(
+        { workspace: workspaceId }, 
+        1, 
+        1000, 
+        true
+      );
+      const projectList = projectsResponse.projects || projectsResponse;
+      setProjects(Array.isArray(projectList) ? projectList : []);
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+      setError('Error fetching projects. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const fetchProjectMembers = useCallback(async (projectId) => {
+    if (!projectId) {
+      setUsers([]);
+      setSelectedMembers([]);
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const currentProject = projects.find(p => p.id === projectId);
+      if (!currentProject?.members) {
+        setUsers([]);
+        return;
+      }
+
+      const membersResponse = await getUsers({}, 1, 1000, true);
+      const allUsers = membersResponse.users || membersResponse;
+      
+      const projectMembers = Array.isArray(allUsers) 
+        ? allUsers.filter(user => currentProject.members.includes(user.id))
+        : [];
+      
+      setUsers(projectMembers);
+    } catch (err) {
+      console.error('Error fetching members:', err);
+      setError('Error fetching project members. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [projects]);
+
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsLoading(true);
+      setIsInitialLoad(true);
+      setError('');
       try {
-        
-        const workspaceData = await getWorkspaces();
-        setWorkspaces(workspaceData);
+        // Load workspaces
+        const workspacesResponse = await getWorkspaces(1, 1000);
+        const workspaceList = workspacesResponse.workspaces || workspacesResponse;
+        setWorkspaces(Array.isArray(workspaceList) ? workspaceList : []);
 
-        // editing
         if (id) {
+          // Load task data
           const taskData = await getTaskById(id);
-          await populateForm(taskData, workspaceData);
+          setFormData({
+            name: taskData.name,
+            description: taskData.description || '',
+            start_date: taskData.start_date || '',
+            due_date: taskData.due_date || '',
+            status: taskData.status || 'to_do',
+          });
+
+          const projectsResponse = await getProjects({}, 1, 1000, true);
+          const allProjects = projectsResponse.projects || projectsResponse;
+          const taskProject = Array.isArray(allProjects) 
+            ? allProjects.find(p => p.id === taskData.project) 
+            : null;
+
+          if (taskProject) {
+            const workspace = workspaceList.find(w => w.id === taskProject.workspace);
+            if (workspace) {
+              setSelectedWorkspace({
+                value: workspace.id,
+                label: workspace.name,
+              });
+
+              const projectsForWorkspace = await getProjects(
+                { workspace: workspace.id }, 
+                1, 
+                1000, 
+                true
+              );
+              const projectList = projectsForWorkspace.projects || projectsForWorkspace;
+              setProjects(Array.isArray(projectList) ? projectList : []);
+
+              setSelectedProject({
+                value: taskProject.id,
+                label: taskProject.name,
+              });
+
+              if (taskData.members?.length > 0) {
+                const membersResponse = await getUsers({}, 1, 1000, true);
+                const allUsers = membersResponse.users || membersResponse;
+                
+                const projectMembers = allUsers.filter(user => 
+                  taskProject.members.includes(user.id)
+                );
+                setUsers(projectMembers);
+
+                const memberDetails = await Promise.all(
+                  taskData.members.map(memberId => getUserById(memberId))
+                );
+                
+                setSelectedMembers(
+                  memberDetails
+                    .filter(member => member)
+                    .map(member => ({
+                      value: member.id,
+                      label: `${member.name} (${member.email})`
+                    }))
+                );
+              }
+            }
+          }
         }
       } catch (err) {
-        setError('Error loading initial data');
+        console.error('Error loading initial data:', err);
+        setError('Error loading task details. Please try again.');
       } finally {
-        setIsLoading(false);
+        setIsInitialLoad(false);
       }
     };
 
     fetchInitialData();
   }, [id]);
 
-  const populateForm = async (taskData, workspaceData) => {
-    setFormData({
-      name: taskData.name,
-      description: taskData.description || '',
-      start_date: taskData.start_date || '',
-      due_date: taskData.due_date || '',
-      status: taskData.status || 'to_do',
-    });
+  const populateForm = async (taskData) => {
+    try {
+      setFormData({
+        name: taskData.name,
+        description: taskData.description || '',
+        start_date: taskData.start_date || '',
+        due_date: taskData.due_date || '',
+        status: taskData.status || 'to_do',
+      });
 
-    const allProjects = await getProjects();
-    const taskProject = allProjects.find(p => p.id === taskData.project);
-    
-    if (taskProject) {
-      const workspace = workspaceData.find(w => w.id === taskProject.workspace);
+      const projectsResponse = await getProjects({}, 1, 1000, true);
+      const allProjects = projectsResponse.projects || projectsResponse;
+      const taskProject = Array.isArray(allProjects) 
+        ? allProjects.find(p => p.id === taskData.project) 
+        : null;
       
-      if (workspace) {
-        setSelectedWorkspace({
-          value: workspace.id,
-          label: workspace.name,
-        });
+      if (taskProject) {
+        const workspace = workspaces.find(w => w.id === taskProject.workspace);
+        if (workspace) {
+          setSelectedWorkspace({
+            value: workspace.id,
+            label: workspace.name,
+          });
 
-        const filteredProjects = allProjects.filter(
-          p => p.workspace === workspace.id
-        );
-        setProjects(filteredProjects);
+          await fetchProjects(workspace.id);
+          
+          setSelectedProject({
+            value: taskProject.id,
+            label: taskProject.name,
+          });
 
-       
-        setSelectedProject({
-          value: taskProject.id,
-          label: taskProject.name,
-          members: taskProject.members || [],
-        });
-
-        const memberDetails = await Promise.all(
-          taskData.members.map(memberId => getUserById(memberId))
-        );
-        setSelectedMembers(
-          memberDetails.map(member => ({
-            value: member.id,
-            label: `${member.name} (${member.email})`,
-          }))
-        );
-        setUsers(memberDetails);
+          if (taskData.members?.length > 0) {
+            await fetchProjectMembers(taskProject.id);
+            const memberDetails = await Promise.all(
+              taskData.members.map(memberId => getUserById(memberId))
+            );
+            
+            setSelectedMembers(
+              memberDetails
+                .filter(member => member)
+                .map(member => ({
+                  value: member.id,
+                  label: `${member.name} (${member.email})`
+                }))
+            );
+          }
+        }
       }
+    } catch (err) {
+      console.error('Error populating form:', err);
+      setError('Error loading task details. Please try again.');
     }
   };
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      if (selectedWorkspace) {
-        try {
-          const allProjects = await getProjects();
-          const filteredProjects = allProjects.filter(
-            project => project.workspace === selectedWorkspace.value
-          );
-          setProjects(filteredProjects);
-        } catch {
-          setError('Error fetching projects.');
-        }
-      } else {
-        setProjects([]);
-        setSelectedProject(null);
-      }
-    };
+  const handleWorkspaceChange = async (selectedOption) => {
+    setSelectedWorkspace(selectedOption);
+    setSelectedProject(null);
+    setSelectedMembers([]);
+    if (selectedOption) {
+      await fetchProjects(selectedOption.value);
+    }
+  };
 
-    fetchProjects();
-  }, [selectedWorkspace]);
-
-  useEffect(() => {
-    const fetchProjectMembers = async () => {
-      if (selectedProject) {
-        try {
-          const memberDetails = await Promise.all(
-            selectedProject.members.map(memberId => getUserById(memberId))
-          );
-          setUsers(memberDetails);
-        } catch {
-          setError('Error fetching project members.');
-          setUsers([]);
-        }
-      } else {
-        setUsers([]);
-        setSelectedMembers([]);
-      }
-    };
-
-    fetchProjectMembers();
-  }, [selectedProject]);
+  const handleProjectChange = async (selectedOption) => {
+    setSelectedProject(selectedOption);
+    if (selectedOption) {
+      await fetchProjectMembers(selectedOption.value);
+    }
+  };
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -156,15 +260,6 @@ const TaskForm = () => {
 
   const handleStatusChange = selectedOption => {
     setFormData({ ...formData, status: selectedOption.value });
-  };
-
-  const handleWorkspaceChange = selectedOption => {
-    setSelectedWorkspace(selectedOption);
-    setSelectedProject(null);
-  };
-
-  const handleProjectChange = selectedOption => {
-    setSelectedProject(selectedOption);
   };
 
   const handleMembersChange = selectedOptions => {
@@ -193,6 +288,7 @@ const TaskForm = () => {
     };
 
     try {
+      setIsLoading(true);
       if (id) {
         await updateTask(id, taskData);
       } else {
@@ -200,23 +296,25 @@ const TaskForm = () => {
       }
       navigate('/tasks');
     } catch (err) {
-      setError(err.response?.data?.message || 'Error saving task.');
+      console.error('Error saving task:', err);
+      setError(err.response?.data?.message || 'Error saving task. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (isLoading) {
-    return <div className="loading">Loading...</div>;
+  if (isInitialLoad) {
+    return <div className="loading">Loading initial data...</div>;
   }
 
   return (
-    <>
-      {/* <SideBar /> */}
-      <div className="taskForm-container">
-        <div className="taskForm-card">
-          <h2 className="taskForm-title">{id ? 'Edit Task' : 'Create Task'}</h2>
-          {error && <p className="taskForm-error">{error}</p>}
+    <div className="taskForm-container">
+      <div className="taskForm-card">
+        <h2 className="taskForm-title">{id ? 'Edit Task' : 'Create Task'}</h2>
+        {error && <p className="taskForm-error">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="taskForm-form">
+        <form onSubmit={handleSubmit} className="taskForm-form">
+          <div className="form-grid">
             <div className="input-group">
               <label className="taskForm-label">Task Name</label>
               <input
@@ -227,40 +325,7 @@ const TaskForm = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="taskForm-label">Task Description</label>
-              <textarea
-                name="description"
-                className="taskForm-input"
-                placeholder="Enter task description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="3"
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="taskForm-label">Start Date</label>
-              <input
-                type="date"
-                name="start_date"
-                className="taskForm-input"
-                value={formData.start_date}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="input-group">
-              <label className="taskForm-label">Due Date</label>
-              <input
-                type="date"
-                name="due_date"
-                className="taskForm-input"
-                value={formData.due_date}
-                onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
 
@@ -272,11 +337,49 @@ const TaskForm = () => {
                 onChange={handleStatusChange}
                 value={statusOptions.find(option => option.value === formData.status)}
                 placeholder="Select task status..."
+                isDisabled={isLoading}
+              />
+            </div>
+
+            <div className="input-group full-width">
+              <label className="taskForm-label">Task Description</label>
+              <textarea
+                name="description"
+                className="taskForm-input"
+                placeholder="Enter task description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="3"
+                disabled={isLoading}
               />
             </div>
 
             <div className="input-group">
-              <label className="taskForm-label">Select Workspace</label>
+              <label className="taskForm-label">Start Date</label>
+              <input
+                type="date"
+                name="start_date"
+                className="taskForm-input"
+                value={formData.start_date}
+                onChange={handleChange}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="taskForm-label">Due Date</label>
+              <input
+                type="date"
+                name="due_date"
+                className="taskForm-input"
+                value={formData.due_date}
+                onChange={handleChange}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="input-group">
+              <label className="taskForm-label">Workspace</label>
               <Select
                 className="taskForm-select"
                 options={workspaces.map(workspace => ({
@@ -286,27 +389,26 @@ const TaskForm = () => {
                 onChange={handleWorkspaceChange}
                 value={selectedWorkspace}
                 placeholder="Select a workspace..."
-                isDisabled={!!id} // Disable when editing to maintain data integrity
+                isDisabled={!!id || isLoading}
               />
             </div>
 
             <div className="input-group">
-              <label className="taskForm-label">Select Project</label>
+              <label className="taskForm-label">Project</label>
               <Select
                 className="taskForm-select"
                 options={projects.map(project => ({
                   value: project.id,
                   label: project.name,
-                  members: project.members || [],
                 }))}
                 onChange={handleProjectChange}
                 value={selectedProject}
-                placeholder="Select a project..."
-                isDisabled={!selectedWorkspace}
+                placeholder={!selectedWorkspace ? "Select workspace first" : "Select a project..."}
+                isDisabled={!selectedWorkspace || isLoading}
               />
             </div>
 
-            <div className="input-group">
+            <div className="input-group full-width">
               <label className="taskForm-label">Assign Members</label>
               <Select
                 isMulti
@@ -317,22 +419,36 @@ const TaskForm = () => {
                 }))}
                 onChange={handleMembersChange}
                 value={selectedMembers}
-                placeholder="Select members..."
-                isDisabled={!selectedProject}
+                placeholder={
+                  isLoading ? "Loading..." :
+                  !selectedProject ? "Select project first" :
+                  users.length === 0 ? "No members in project" :
+                  "Select members..."
+                }
+                isDisabled={!selectedProject || isLoading || users.length === 0}
               />
             </div>
+          </div>
 
-            <button type="submit" className="taskForm-button">
-              {id ? 'Update Task' : 'Create Task'}
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="taskForm-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Processing...' : (id ? 'Update Task' : 'Create Task')}
             </button>
-          </form>
-
-          <button onClick={() => navigate(-1)} className="taskForm-cancel">
-            Cancel
-          </button>
-        </div>
+            <button 
+              onClick={() => navigate(-1)} 
+              className="taskForm-cancel"
+              disabled={isLoading}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

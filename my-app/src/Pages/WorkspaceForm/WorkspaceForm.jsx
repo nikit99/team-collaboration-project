@@ -6,7 +6,6 @@ import { getUserById, getUsers } from '../../api/authapi';
 import './WorkspaceForm.css';
 import SideBar from '../../Components/Sidebar/Sidebar';
 
-
 const WorkspaceForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,43 +13,48 @@ const WorkspaceForm = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError('');
       try {
-        const userData = await getUsers();
-        setUsers(userData);
-      } catch {
-        setError('Error fetching users.');
-      }
-    };
+        const usersResponse = await getUsers({}, 1, 10, true);
+        const userList = usersResponse.users || [];
+        setUsers(userList);
 
-    const fetchWorkspace = async () => {
-      if (id) {
-        try {
+        if (id) {
           const workspaceData = await getWorkspaceById(id);
           setFormData({
             name: workspaceData.name,
             description: workspaceData.description || '',
           });
-          if (workspaceData.members) {
+          
+          if (workspaceData.members && workspaceData.members.length > 0) {
             const memberDetails = await Promise.all(
-              workspaceData.members.map((memberId) => getUserById(memberId))
+              workspaceData.members.map(memberId => getUserById(memberId))
             );
-            setSelectedMembers(
-              memberDetails.map((member) => ({
+            
+            const validMembers = memberDetails
+              .filter(member => member !== null)
+              .map(member => ({
                 value: member.id,
-                label: `${member.name} (${member.email})`,
-              }))
-            );
+                label: `${member.name || 'Unknown'} (${member.email || 'No email'})`
+              }));
+            
+            setSelectedMembers(validMembers);
           }
-        } catch {
-          setError('Error fetching workspace details.');
         }
+      } catch (err) {
+        console.error('Error in fetchData:', err);
+        setError('Error fetching data. Please try again.');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUsers().then(fetchWorkspace);
+    fetchData();
   }, [id]);
 
   const handleChange = (e) => {
@@ -63,72 +67,112 @@ const WorkspaceForm = () => {
       setError('Workspace name is required.');
       return;
     }
+    
     try {
+      setLoading(true);
       const workspaceData = {
         name: formData.name,
-        description: formData.description || '',
-        members: selectedMembers.map((user) => user.value),
+        description: formData.description,
+        members: selectedMembers.map(user => user.value),
       };
-      id ? await updateWorkspace(id, workspaceData) : await createWorkspace(workspaceData);
+
+      if (id) {
+        await updateWorkspace(id, workspaceData);
+      } else {
+        await createWorkspace(workspaceData);
+      }
       navigate('/workspaces');
     } catch (err) {
-      setError('Error saving workspace.');
+      console.error('Error saving workspace:', err);
+      setError('Error saving workspace. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-    {/* <SideBar/> */}
-    <div className="workspaceForm-container">
-      <div className="workspaceForm-card">
-        <h2 className="workspaceForm-title">{id ? 'Edit Workspace' : 'Create Workspace'}</h2>
-        {error && <p className="workspaceForm-error">{error}</p>}
-        <form onSubmit={handleSubmit} className="workspaceForm-form">
-          <div className="input-group">
-            <label className="workspaceForm-label">Workspace Name</label>
-            <input 
-              type="text" 
-              name="name" 
-              className="workspaceForm-input" 
-              placeholder="Enter workspace name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required 
-            />
-          </div>
+    <div className="workspace-page">
+      <div className="workspaceForm-container">
+        <div className="workspaceForm-card">
+          <h2 className="workspaceForm-title">
+            {id ? 'Edit Workspace' : 'Create Workspace'}
+          </h2>
+          
+          {error && (
+            <div className="workspaceForm-error">
+              {error}
+            </div>
+          )}
 
-          <div className="input-group">
-            <label className="workspaceForm-label">Workspace Description</label>
-            <input 
-              type="text" 
-              name="description" 
-              className="workspaceForm-input" 
-              placeholder="Enter workspace description" 
-              value={formData.description} 
-              onChange={handleChange} 
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="workspaceForm-form">
+            <div className="input-group">
+              <label className="workspaceForm-label">Workspace Name *</label>
+              <input
+                type="text"
+                name="name"
+                className="workspaceForm-input"
+                placeholder="Enter workspace name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                disabled={loading}
+              />
+            </div>
 
-          <div className="input-group">
-            <label className="workspaceForm-label">Select Members</label>
-            <Select className='workspaceForm-select'
-              options={users.map((user) => ({
-                value: user.id,
-                label: `${user.name} (${user.email})`,
-              }))} 
-              isMulti 
-              onChange={setSelectedMembers} 
-              value={selectedMembers} 
-              placeholder="Search and select members..." 
-            />
-          </div>
+            <div className="input-group">
+              <label className="workspaceForm-label">Description</label>
+              <textarea
+                name="description"
+                className="workspaceForm-input workspaceForm-textarea"
+                placeholder="Enter workspace description"
+                value={formData.description}
+                onChange={handleChange}
+                disabled={loading}
+                rows={3}
+              />
+            </div>
 
-          <button type="submit" className="workspaceForm-button">{id ? 'Update' : 'Create'}</button>
-        </form>
-        <button onClick={() => navigate('/workspaces')} className="workspaceForm-cancel">Cancel</button>
+            <div className="input-group">
+              <label className="workspaceForm-label">Members</label>
+              <Select
+                className="workspaceForm-select"
+                classNamePrefix="select"
+                options={users.map(user => ({
+                  value: user.id,
+                  label: `${user.name || 'Unknown'} (${user.email || 'No email'})`
+                }))}
+                isMulti
+                value={selectedMembers}
+                onChange={setSelectedMembers}
+                isLoading={loading}
+                isDisabled={loading}
+                placeholder="Select members..."
+                noOptionsMessage={() => "No users available"}
+              />
+            </div>
+
+           
+              <button
+                type="submit"
+                className="workspaceForm-button"
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : (id ? 'Update Workspace' : 'Create Workspace')}
+              </button>
+              
+              <button
+                type="button"
+                className="workspaceForm-cancel"
+                onClick={() => navigate('/workspaces')}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+          
+          </form>
+        </div>
       </div>
     </div>
-    </>
   );
 };
 

@@ -19,6 +19,67 @@
   display: inline-block;
   padding-bottom: 5px;
 }
+/***************/
+
+/* Add these styles to your Users.css */
+.react-select-container {
+  width: 150px; /* Match search input width */
+  font-size: 14px;
+}
+
+.react-select__control {
+  min-height: 38px !important; /* Match search input height */
+  border-radius: 4px !important;
+  border: 1px solid #ced4da !important;
+  
+}
+
+.react-select__control--is-focused {
+  border-color: black !important;
+}
+
+.react-select__value-container {
+  padding: 0 8px !important;
+}
+
+.react-select__single-value {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.react-select__indicator {
+  padding: 4px !important;
+}
+
+.react-select__menu {
+  z-index: 3 !important;
+  font-size: 14px;
+}
+
+/* Make sure the select and input align properly */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  white-space: nowrap;
+}
+
+.search-input {
+  width: 150px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  height: 38px;
+  box-sizing: border-box;
+}
+/*********************/
+
 
 .loading-message,
 .error {
@@ -41,7 +102,7 @@
 .user-table-container {
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 500px;
+  max-height: 400px;
   position: relative;
   border-radius: 8px;
 }
@@ -71,7 +132,15 @@
   font-weight: 600;
   color: black; /* Header text color */
   background-color: #f2f2f2;
-  border-radius: 8px;
+}
+.user-table th:first-child {
+  border-left: 1px solid #ddd;
+  border-radius: 8px 0 0 8px;
+}
+
+.user-table th:last-child {
+  border-right: 1px solid #ddd;
+  border-radius: 0 8px 8px 0;
 }
 
 .user-table tr {
@@ -112,8 +181,18 @@
   transform: scale(1.1);
 }
 
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between label and select */
+}
+
+.filter-group label {
+  white-space: nowrap; /* prevents label text from wrapping */
+}
+
 .delete-icon:hover {
-  color: #dc3545;
+  color: #4e4e4e;
   transform: scale(1.1);
 }
 
@@ -148,6 +227,9 @@
   border-color: #008080;
   box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.25);
 }
+
+
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

@@ -8,10 +8,30 @@ from .models import Project
 from .serializers import ProjectSerializer
 from django.db.models import Q
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+from .Pagination import ProjectPagination  # Import our custom pagination
+
+
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ProjectPagination 
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'workspace': ['exact'],
+        'status': ['exact'],
+        'created_by': ['exact'],
+        'members': ['exact'],
+        'start_date': ['gte', 'lte', 'exact'],
+        'end_date': ['gte', 'lte', 'exact'],
+        'name': ['exact', 'icontains'],
+    }
+    ordering_fields = ['name', 'created_at', 'start_date', 'end_date', 'status']
+    ordering = ['-created_at']
+
 
     def perform_create(self, serializer):
         workspace = serializer.validated_data.get('workspace')

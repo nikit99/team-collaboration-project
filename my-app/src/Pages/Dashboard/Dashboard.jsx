@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FaTasks, FaProjectDiagram, FaBuilding, FaChartPie } from 'react-icons/fa';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
-// import { getWorkspaces, getProjects, getTasks } from '../../api/api';
 import { getTasks } from '../../api/taskApi';
 import { getWorkspaces } from '../../api/workspaceApi';
 import { getProjects } from '../../api/projectsApi';
@@ -37,28 +36,37 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
     
-        const [workspaces, projects, tasks] = await Promise.all([
-          getWorkspaces(),
-          getProjects(),
-          getTasks()
+        const [workspacesData, projectsData, tasksData] = await Promise.all([
+          getWorkspaces(1, 1000),  
+          getProjects({}, 1, 1000), 
+          getTasks({}, 1, 1000)     
         ]);
 
-        const filteredWorkspaces = workspaces.filter(ws => 
-          isAdminOrSuperAdmin || ws.members.includes(userId)
-        );
+        const workspaces = workspacesData.workspaces || workspacesData;
+        const projects = projectsData.projects || projectsData;
+        const tasks = tasksData.tasks || tasksData;
+
+        const filteredWorkspaces = Array.isArray(workspaces) 
+          ? workspaces.filter(ws => isAdminOrSuperAdmin || ws.members?.includes(userId))
+          : [];
         
-        const filteredProjects = projects.filter(project => 
-          isAdminOrSuperAdmin || 
-          project.owner === userId || 
-          project.members.includes(userId)
-        );
+        const filteredProjects = Array.isArray(projects)
+          ? projects.filter(project => 
+              isAdminOrSuperAdmin || 
+              project.owner === userId || 
+              project.members?.includes(userId)
+            )
+          : [];
         
-        const filteredTasks = tasks.filter(task => 
-          isAdminOrSuperAdmin || 
-          task.owner === userId || 
-          task.members.includes(userId)
-        );
+        const filteredTasks = Array.isArray(tasks)
+          ? tasks.filter(task => 
+              isAdminOrSuperAdmin || 
+              task.owner === userId || 
+              task.members?.includes(userId)
+            )
+          : [];
 
         const projectsStatus = {
           completed: filteredProjects.filter(p => p.status === 'completed').length,
@@ -66,7 +74,6 @@ const Dashboard = () => {
           cancelled: filteredProjects.filter(p => p.status === 'cancelled').length
         };
 
- 
         const tasksStatus = {
           completed: filteredTasks.filter(t => t.status === 'completed').length,
           in_progress: filteredTasks.filter(t => t.status === 'in_progress').length,
@@ -81,6 +88,7 @@ const Dashboard = () => {
           tasksStatus
         });
       } catch (err) {
+        console.error('Error fetching dashboard data:', err);
         setError(err.message || 'Error fetching dashboard data');
       } finally {
         setLoading(false);
@@ -93,7 +101,7 @@ const Dashboard = () => {
   const projectsChartData = [
     { name: 'Completed', value: stats.projectsStatus.completed },
     { name: 'In Progress', value: stats.projectsStatus.in_progress },
-    { name: 'cancelled', value: stats.projectsStatus.cancelled }
+    { name: 'Cancelled', value: stats.projectsStatus.cancelled }
   ];
 
   const tasksChartData = [
@@ -129,133 +137,129 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-    
-    <div className="dashboard-header">
-        <h2 className="dashboard-title">Home</h2>
-        <p className="dashboard-subtitle">Monitor all your workspaces, projects, and tasks here</p>
-      </div>
-      {/* <p className='dashboard-para'>Monitor all your workspaces, projects and tasks here</p> */}
-      <div className="stats-grid">
-        {/* Workspaces Card */}
-        <div className="stat-card" onClick={() => navigate('/workspaces')}>
-          <div className="stat-icon">
-            <FaBuilding size={24} />
-          </div>
-          <div className="stat-content">
-            <h3>Workspaces</h3>
-            <p className="stat-value">{stats.workspaces}</p>
-          </div>
+      <div className="dashboard-content">
+        <div className="dashboard-header">
+          <h2 className="dashboard-title">Home</h2>
+          <p className="dashboard-subtitle">Monitor all your workspaces, projects, and tasks here</p>
         </div>
-
-        <div className="stat-card" onClick={() => navigate('/ProjectDemo')}>
-          <div className="stat-icon">
-            <FaProjectDiagram size={24} />
+        
+        <div className="stats-grid">
+          <div className="stat-card" onClick={() => navigate('/workspaces')}>
+            <div className="stat-icon">
+              <FaBuilding size={24} />
+            </div>
+            <div className="stat-content">
+              <h3>Workspaces</h3>
+              <p className="stat-value">{stats.workspaces}</p>
+            </div>
           </div>
-          <div className="stat-content">
-            <h3>Projects</h3>
-            
-            <p className="stat-value">{stats.projects}</p>
-            <div className="stat-subtext">
-              <span className="completed">{stats.projectsStatus.completed} completed</span>
-              <span className="in-progress">{stats.projectsStatus.in_progress} in progress</span>
+
+          <div className="stat-card" onClick={() => navigate('/ProjectDemo')}>
+            <div className="stat-icon">
+              <FaProjectDiagram size={24} />
+            </div>
+            <div className="stat-content">
+              <h3>Projects</h3>
+              <p className="stat-value">{stats.projects}</p>
+              <div className="stat-subtext">
+                <span className="completed">{stats.projectsStatus.completed} completed</span>
+                <span className="in-progress">{stats.projectsStatus.in_progress} in progress</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="stat-card" onClick={() => navigate('/tasks')}>
+            <div className="stat-icon">
+              <FaTasks size={24} />
+            </div>
+            <div className="stat-content">
+              <h3>Tasks</h3>
+              <p className="stat-value">{stats.tasks}</p>
+              <div className="stat-subtext">
+                <span className="completed">{stats.tasksStatus.completed} completed</span>
+                <span className="to-do" onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/tasks?status=to_do');
+                }}>{stats.tasksStatus.to_do} to do</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="stat-card" onClick={() => navigate('/tasks')}>
-          <div className="stat-icon">
-            <FaTasks size={24} />
+        <div className="charts-container">
+          <div className="chart-card">
+            <h3>Projects Status</h3>
+            <div className="chart-wrapper">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={projectsChartData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {projectsChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="stat-content">
-            <h3>Tasks</h3>
-            <p className="stat-value">{stats.tasks}</p>
-            <div className="stat-subtext">
-              <span className="completed">{stats.tasksStatus.completed} completed</span>
-              <span className="to-do" onClick={(e) => {
-                e.stopPropagation();
-                navigate('/tasks?status=to_do');
-              }}>{stats.tasksStatus.to_do} to do</span>
+
+          <div className="chart-card">
+            <h3>Tasks Status</h3>
+            <div className="chart-wrapper">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={tasksChartData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {tasksChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="charts-container">
-        <div className="chart-card">
-          <h3>Projects Status</h3>
-
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={projectsChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {projectsChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+        <div className="quick-links">
+          <h3>Quick Access</h3>
+          <div className="link-buttons">
+            <button 
+              className="link-button todo-tasks"
+              onClick={() => navigate('/tasks?status=to_do')}
+            >
+              <FaTasks /> To Do Tasks ({stats.tasksStatus.to_do})
+            </button>
+            <button 
+              className="link-button in-progress-tasks"
+              onClick={() => navigate('/tasks?status=in_progress')}
+            >
+              <FaTasks /> In Progress Tasks ({stats.tasksStatus.in_progress})
+            </button>
+            <button 
+              className="link-button in-progress-projects"
+              onClick={() => navigate('/ProjectDemo?status=in_progress')}
+            >
+              <FaProjectDiagram /> Active Projects ({stats.projectsStatus.in_progress})
+            </button>
           </div>
-        </div>
-
-        {/* Tasks Status Chart */}
-        <div className="chart-card">
-          <h3>Tasks Status</h3>
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={tasksChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {tasksChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Links Section */}
-      <div className="quick-links">
-        <h3>Quick Access</h3>
-        <div className="link-buttons">
-          <button 
-            className="link-button todo-tasks"
-            onClick={() => navigate('/tasks?status=to_do')}
-          >
-            <FaTasks /> To Do Tasks ({stats.tasksStatus.to_do})
-          </button>
-          <button 
-            className="link-button in-progress-tasks"
-            onClick={() => navigate('/tasks?status=in_progress')}
-          >
-            <FaTasks /> In Progress Tasks ({stats.tasksStatus.in_progress})
-          </button>
-          <button 
-            className="link-button in-progress-projects"
-            onClick={() => navigate('/projects?status=in_progress')}
-          >
-            <FaProjectDiagram /> Active Projects ({stats.projectsStatus.in_progress})
-          </button>
         </div>
       </div>
     </div>
@@ -263,4 +267,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

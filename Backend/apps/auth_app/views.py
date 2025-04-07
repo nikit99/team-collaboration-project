@@ -6,21 +6,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model 
-
 from django.contrib.auth.hashers import check_password, make_password  
-
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
-
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
-
 from rest_framework.permissions import AllowAny
-
 from rest_framework.views import APIView
-from .models import User  # Ensure User model is imported
+from .models import User  
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import LimitOffsetPagination
+from .Pagination import OptionalPageNumberPagination 
 
 
 User = get_user_model()
@@ -34,8 +34,8 @@ class SignupView(APIView):
         if User.objects.filter(email=email).exists():
             return Response({'error': 'User with this email already exists!'}, status=status.HTTP_400_BAD_REQUEST)
 
-        data = request.data.copy()  # Copy request data
-        data.pop('role', None)  # Remove role from request data if present
+        data = request.data.copy()  
+        data.pop('role', None) 
 
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
@@ -116,8 +116,6 @@ class ResetPasswordRequestView(APIView):
 
         return Response({"message": "Password reset link sent to your email"}, status=status.HTTP_200_OK)
     
-
-
 class ResetPasswordView(APIView):
     def post(self, request, user_id, token):
         password = request.data.get("password")
@@ -142,11 +140,25 @@ class ResetPasswordView(APIView):
 
         return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
     
+class CustomPagination(PageNumberPagination):
+    page_size = 10  
+    page_size_query_param = 'page_size'  
+    max_page_size = 100  
 
 class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]  # Requires authentication
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = {
+        'role': ['exact'], 
+    }
+    search_fields = ['name', 'email']
+    ordering_fields = ['name', 'email', 'role']
+    ordering = ['name']
+    pagination_class = OptionalPageNumberPagination;
+
+
 
 class GetUserByIdView(APIView):
     permission_classes = [AllowAny]  # No authentication required

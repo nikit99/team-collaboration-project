@@ -33,7 +33,6 @@ class Project(models.Model):
         super().save(*args, **kwargs)
 
     def add_member(self, user):
-        """Allow adding only workspace members to the project."""
         if user in self.workspace.members.all():
             self.members.add(user)
         else:

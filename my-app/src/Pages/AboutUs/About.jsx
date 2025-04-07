@@ -1,27 +1,3 @@
-// import SideBar from '../../Components/Sidebar/Sidebar';
-// import Footer from '../../Components/Footer/Footer';
-// import './About.css';
-
-// const About = () => {
-//   return (
-//     <div className="about-container">
-      
-//       <div className="about-content">
-//         <h1 className="about-title">About Us</h1>
-//         <p className="about-description">
-//           Welcome to <strong>Team Collaboration App</strong>, where seamless teamwork meets efficiency.
-//           Our platform is designed to enhance productivity, streamline communication, and empower teams to achieve their goals effortlessly.
-//         </p>
-
-//       </div>
-//       {/* <Footer /> */}
-//     </div>
-//   );
-// };
-
-// export default About;
-
-
 import React from 'react';
 import { 
   Box,
@@ -62,7 +38,6 @@ const About = () => {
   return (
     <Box sx={{ bgcolor: 'background.default', pt: 4 }}>
       <Container maxWidth="lg">
-        {/* Header */}
         <Box textAlign="center" mb={6}>
           <Typography 
             variant="h2" 
@@ -80,7 +55,6 @@ const About = () => {
           </Typography>
         </Box>
 
-        {/* Mission Section */}
         <Paper elevation={3} sx={{ p: 4, mb: 6, borderRadius: 2 }}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
@@ -116,7 +90,6 @@ const About = () => {
           </Grid>
         </Paper>
 
-        {/* Values Section */}
         <Box mb={8}>
           <Typography variant="h3" component="h2" align="center" gutterBottom sx={{ fontWeight: 600, mb: 4 }}>
             Our Core Values
@@ -160,7 +133,7 @@ const About = () => {
           </Grid>
         </Box>
 
-        {/* Team Section */}
+
         <Box mb={4}>
           <Typography variant="h3" component="h2" align="center" gutterBottom sx={{ fontWeight: 600, mb: 6 }}>
             Meet Our Team

@@ -6,7 +6,7 @@ export const handleAuth = async (type, formData, setError, navigate) => {
     if (type === 'signup') {
       response = await signup(formData);
       console.log('Signup Response:', response);
-      navigate('/signin'); // Redirect to sign-in page after signup
+      navigate('/signin'); 
       return;
     } else if (type === 'signin') {
       response = await signin({

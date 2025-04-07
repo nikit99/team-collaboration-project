@@ -1,5 +1,6 @@
 /* Header.css */
 .app-header {
+  /* background-color: white; */
   background-color: white;
   color: black;
   padding: 0 20px;
@@ -74,8 +75,9 @@
   margin-left: 20px;
   margin-right: 0;
   border-radius: 50%;
-  background-color: #E5E7EB;
-  color: black;
+  /* background-color: #E5E7EB; */
+  background-color: #417dca;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,7 +88,7 @@
 }
 
 .user-circle:hover {
-  background-color: #D1D5DB;
+  background-color: #386aab;
   transform: scale(1.05);
 }
 

@@ -6,18 +6,49 @@ const token = localStorage.getItem('authToken');
 const headers = { Authorization: `Token ${token}` };
 
 
-export const getProjects = async () => {
+
+export const getProjects = async (filters = {}, page = 1, pageSize = 10) => {
   try {
     const token = localStorage.getItem('authToken'); 
     const headers = { Authorization: `Token ${token}` };
 
-    const response = await axios.get(BASE_URL, { headers });
-    return response.data;
+    const params = new URLSearchParams();
+    
+    if (filters.status && filters.status !== 'all') {
+      params.append('status', filters.status);
+    }
+    if (filters.workspace && filters.workspace !== 'all') {
+      params.append('workspace', filters.workspace);
+    }
+    if (filters.search) {
+      params.append('name__icontains', filters.search);
+    }
+    if (filters.ordering) {
+      params.append('ordering', filters.ordering);
+    }
+
+    params.append('page', page);
+    if (pageSize) params.append('page_size', pageSize);
+
+    const response = await axios.get(BASE_URL, { headers, params });
+    
+    return {
+      projects: response.data.results,
+      pagination: {
+        total: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous,
+        currentPage: response.data.current_page || page,
+        totalPages: response.data.total_pages || Math.ceil(response.data.count / pageSize),
+        pageSize: pageSize
+      }
+    };
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return [];
+    throw error;
   }
 };
+
 
 export const createProject = async (projectData) => {
   try {

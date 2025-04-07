@@ -30,14 +30,13 @@
 
 .back-icon {
     font-size: 1.5rem;
-    color: #008080;
+    color: black;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
 
 .back-icon:hover {
     transform: scale(1.1);
-    color: #006666;
 }
 
 /* Filter Section */
@@ -83,7 +82,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: #008080;
+    /* background-color: #008080; */
+    background-color: #417dca;
     color: white;
     padding: 8px 16px;
     border: none;
@@ -94,7 +94,8 @@
 }
 
 .add-task-btn:hover {
-    background-color: #006666;
+    /* background-color: #006666; */
+    background-color: #386aab;
 }
 
 /* Table Container */
@@ -115,7 +116,7 @@
 }
 
 .table-body-container {
-    max-height: 400px;
+    max-height: 340px;
     overflow-y: auto;
     display: block;
 }
@@ -255,6 +256,187 @@
     align-items: center;
     font-size: 0.9rem;
   }
+ 
+.sortable-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 12px;
+  }
+  
+  .sortable-header:hover {
+    color: #008080;
+    background-color: #f5f5f5;
+  }
+  
+  .sort-icon {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .sortable-header:hover .sort-icon {
+    color: #008080;
+  }
+  
+  
+ 
+  /* Sortable header styles */
+.sortable-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 12px;
+    transition: color 0.2s ease;
+  }
+  
+  .sortable-header:hover {
+    color: #008080; /* Teal color on hover */
+    background-color: #f5f5f5; /* Light gray background on hover */
+  }
+  
+  .sort-icon {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #666; /* Default icon color */
+  }
+  
+  .sortable-header:hover .sort-icon {
+    color: #008080; /* Teal color on hover */
+  }
+  
+  /* If you want to add some animation to the sort icon */
+  .sort-icon svg {
+    transition: transform 0.2s ease;
+  }
+  
+  .sortable-header:hover .sort-icon svg {
+    transform: scale(1.1);
+  }
+
+
+  /*****************/
+  /* React Select Styles */
+.react-select-container {
+    width: 150px;
+    font-size: 14px;
+  }
+  
+  .react-select__control {
+    min-height: 38px !important;
+    border-radius: 4px !important;
+    border: 1px solid #ced4da !important;
+  }
+  
+  .react-select__control--is-focused {
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+  }
+  
+  .react-select__value-container {
+    padding: 0 8px !important;
+  }
+  
+  .react-select__single-value {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .react-select__indicator {
+    padding: 4px !important;
+  }
+  
+  .react-select__menu {
+    z-index: 1000 !important;
+  }
+
+  .react-select__menu-list {
+    z-index: 1000 !important;
+  }
+  
+  /* Filter Container Styles */
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .filter-group label {
+    font-weight: 500;
+    color: #004d4d;
+    white-space: nowrap;
+  }
+  
+  .search-input {
+    width: 150px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    height: 38px;
+    box-sizing: border-box;
+  }
+  
+  .add-task-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #417dca;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: auto;
+  }
+  
+  .add-task-btn:hover {
+    background-color: #386aab;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .filter-container {
+      gap: 10px;
+    }
+    
+    .filter-group {
+      width: 100%;
+    }
+    
+    .react-select-container,
+    .search-input {
+      width: 100%;
+    }
+    
+    .add-task-btn {
+      margin-left: 0;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  /****************/
+ 
+  /***************/
+  
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

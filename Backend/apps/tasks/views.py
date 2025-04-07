@@ -12,55 +12,41 @@ from rest_framework.decorators import action
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from rest_framework.pagination import PageNumberPagination
 
+from .Pagination import TaskPagination  
 
 class TaskViewSet(viewsets.ModelViewSet):
-    # queryset = Task.objects.all()
-    # serializer_class = TaskSerializer
-    # permission_classes = [IsAuthenticated]
-
-    # def perform_create(self, serializer):
-    #     """Automatically assign the project owner as the task owner."""
-    #     project = serializer.validated_data['project']
-    #     if not (self.request.user == project.created_by or self.request.user.role == "superadmin"):
-    #         raise PermissionDenied("Only the project owner or superadmin can create tasks.")
-
-    #     task = serializer.save(owner=project.created_by)
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
-    # pagination_class = PageNumberPagination
+    pagination_class = TaskPagination  # Use our custom pagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = {
         'project': ['exact'],
-        'project__workspace': ['exact'],  # Filter by workspace ID
-        'project__name': ['exact', 'icontains'],  # Filter by project name
+        'project__workspace': ['exact'],
+        'project__name': ['exact', 'icontains'],
         'status': ['exact'],
         'owner': ['exact'],
-        'due_date': ['gte', 'lte', 'exact'],  # Greater than, less than, or exact date
+        'due_date': ['gte', 'lte', 'exact'],
+        'members': ['exact'],
+        'name': ['exact', 'icontains']
     }
-    ordering_fields = ['name', 'due_date', 'created_at', 'status']
-    ordering = ['-created_at']  # Default ordering (newest first)
+    ordering_fields = ['name', 'due_date', 'created_at', 'status', 'project__name', 'project__workspace__name']
+    ordering = ['-created_at']
 
     def get_queryset(self):
         user = self.request.user
 
         if user.role == "superadmin":
-            return Task.objects.all()  # Superadmin sees all tasks
+            return Task.objects.all()
 
-         # Get tasks where the user is the owner OR a member
         owner_tasks = Task.objects.filter(owner=user)
         member_tasks = Task.objects.filter(members=user)
-
-        # Ensure both queries have the same uniqueness condition
         return (owner_tasks | member_tasks).distinct()
 
     def update(self, request, *args, **kwargs):
-        """Handles editing (updating) a task"""
         task = self.get_object()
 
-        # Only owner or superadmin can edit the task
         if request.user != task.owner and request.user.role != "superadmin":
             return Response({"error": "You do not have permission to edit this task."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -72,10 +58,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-        """Handles deleting a task"""
         task = self.get_object()
 
-        # Only owner or superadmin can delete the task
         if request.user != task.owner and request.user.role != "superadmin":
             return Response({"error": "You do not have permission to delete this task."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -84,10 +68,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["PATCH"])
     def change_status(self, request, pk=None):
-        """Handles changing the status of a task"""
         task = get_object_or_404(Task, pk=pk)
 
-        # Only owner or superadmin can change the status
         if request.user != task.owner and request.user.role != "superadmin" and request.user not in task.members.all():
             return Response({"error": "You do not have permission to change the task status."}, status=status.HTTP_403_FORBIDDEN)
 

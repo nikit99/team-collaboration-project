@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User  # Import your custom user model
+from .models import User  
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'username', 'is_superuser', 'is_staff')  # Display columns

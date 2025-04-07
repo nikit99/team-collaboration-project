@@ -34,7 +34,6 @@ const Header = ({ toggleSidebar, sidebarCollapsed }) => {
           {sidebarCollapsed ? '☰' : '☰'}
         </div>
 
-        {/* <div className="header-title">Team Collaboration</div> */}
 
         <div className="header-nav">
           <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>

@@ -4,17 +4,31 @@ const BASE_URL = 'http://127.0.0.1:8000/workspaces/';
 const token = localStorage.getItem('authToken'); 
 const headers = { Authorization: `Token ${token}` };
 
-// Get all workspaces
-export const getWorkspaces = async () => {
+export const getWorkspaces = async (page = 1, pageSize = 10) => {
   try {
     const token = localStorage.getItem('authToken');
     const headers = { Authorization: `Token ${token}` };
+    const params = new URLSearchParams();
+    
+    params.append('page', page);
+    if (pageSize) params.append('page_size', pageSize);
 
-    const response = await axios.get(BASE_URL, { headers });
-    return response.data;
+    const response = await axios.get(BASE_URL, { headers, params });
+    
+    return {
+      workspaces: response.data.results,
+      pagination: {
+        total: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous,
+        currentPage: response.data.current_page || page,
+        totalPages: response.data.total_pages || Math.ceil(response.data.count / pageSize),
+        pageSize: pageSize
+      }
+    };
   } catch (error) {
     console.error('Error fetching workspaces:', error);
-    return [];
+    throw error;
   }
 };
 
@@ -28,10 +42,9 @@ export const createWorkspace = async (workspaceData) => {
     return response.data;
   } catch (error) {
     console.error('Error creating workspace:', error);
-    return null;
+    throw error;
   }
 };
-
 
 export const updateWorkspace = async (id, workspaceData) => {
   try {

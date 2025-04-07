@@ -5,51 +5,53 @@ const BASE_URL = 'http://127.0.0.1:8000/tasks/';
 const token = localStorage.getItem('authToken');
 const headers = { Authorization: `Token ${token}` };
 
-// export const getTasks = async () => {
-//   try {
-//     const token = localStorage.getItem('authToken');
-//     const headers = { Authorization: `Token ${token}` };
 
-//     const response = await axios.get(BASE_URL, { headers });
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching tasks:', error);
-//     return [];
-//   }
-// };
-// api/taskApi.js
-export const getTasks = async (filters = {}) => {
+
+export const getTasks = async (filters = {}, page = 1, pageSize = 10) => {
     try {
-      const token = localStorage.getItem('authToken');
-      const headers = { Authorization: `Token ${token}` };
-      
-      // Convert filters object to URL params
-      const params = new URLSearchParams();
-      
-      // Add filters
-      if (filters.projectId) params.append('project', filters.projectId);
-      if (filters.status && filters.status !== 'all') params.append('status', filters.status);
-      if (filters.workspace && filters.workspace !== 'all') {
-        params.append('project__workspace', filters.workspace);
-      }
-      if (filters.projectName && filters.projectName !== 'all') {
-        params.append('project__name', filters.projectName);
-      }
-      if (filters.searchTerm) params.append('search', filters.searchTerm);
-      
-      // Add sorting
-      if (filters.sortKey) {
-        const direction = filters.sortDirection === 'descending' ? '-' : '';
-        params.append('ordering', `${direction}${filters.sortKey}`);
-      }
-  
-      const response = await axios.get(BASE_URL, { headers, params });
-      return response.data;
+        const token = localStorage.getItem('authToken');
+        const headers = { Authorization: `Token ${token}` };
+        
+        const params = new URLSearchParams();
+        
+        if (filters.projectId) params.append('project', filters.projectId);
+        if (filters.status && filters.status !== 'all') params.append('status', filters.status);
+        if (filters.workspaceId && filters.workspaceId !== 'all') {
+            params.append('project__workspace', filters.workspaceId);
+        }
+        if (filters.projectName && filters.projectName !== 'all') {
+            params.append('project__name', filters.projectName);
+        }
+        if (filters.searchTerm) params.append('name__icontains', filters.searchTerm);
+        
+        if (filters.sortKey) {
+            const direction = filters.sortDirection === 'descending' ? '-' : '';
+            params.append('ordering', `${direction}${filters.sortKey}`);
+        }
+
+        params.append('page', page);
+        if (pageSize) params.append('page_size', pageSize);
+
+       
+
+        const response = await axios.get(BASE_URL, { headers, params });
+        
+        return {
+            tasks: response.data.results,
+            pagination: {
+                total: response.data.count,
+                next: response.data.next,
+                previous: response.data.previous,
+                currentPage: response.data.current_page || page,
+                totalPages: response.data.total_pages || Math.ceil(response.data.count / pageSize),
+                pageSize: pageSize
+            }
+        };
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      throw error; // Re-throw to handle in component
+        console.error('Error fetching tasks:', error);
+        throw error;
     }
-  };
+};
 
 export const createTask = async (taskData) => {
   try {

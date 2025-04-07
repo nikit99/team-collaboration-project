@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Box,
@@ -68,7 +67,7 @@ const Home = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(33, 39, 50, 0.6)',
+            backgroundColor: 'rgba(21, 24, 28, 0.6)',
             // zIndex: 1,
           },
         }}
@@ -120,21 +119,22 @@ const Home = () => {
             </Typography>
             <Button
               variant="contained"
-              color="secondary"
-              size="large"
+              color="primary"
+              size="medium"
               startIcon={<LoginIcon />}
               onClick={() => navigate('/SignIn')}
               sx={{
-                px: 4,
-                py: 1.5,
-                fontSize: '1.1rem',
-                fontWeight: 600,
+                px: 3,
+                py: 1,
+                fontSize: '1rem',
+                fontWeight: 500,
                 mr: 2,
-                boxShadow: theme.shadows[4],
+                boxShadow: theme.shadows[3],
               }}
             >
               Sign In
             </Button>
+
             <Typography
               variant="body1"
               sx={{
@@ -160,7 +160,6 @@ const Home = () => {
         </Container>
       </Box>
 
-      {/* Features Section */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Typography
           variant="h3"
@@ -171,9 +170,13 @@ const Home = () => {
         >
           Powerful Features
         </Typography>
-        <Grid container spacing={4} sx={{ mt: 4 }}>
+        <Grid
+          container
+          spacing={4}
+          sx={{ mt: 4, display: 'flex', flexWrap: 'nowrap' }}
+        >
           {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={4} key={index}>
               <Card
                 sx={{
                   height: '100%',

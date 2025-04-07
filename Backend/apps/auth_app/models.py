@@ -11,11 +11,11 @@ class User(AbstractUser):
 
     name = models.CharField(max_length=255, default="Unknown") 
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")  # Default role set to "user"
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")  
 
     username = None  
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']  # Removed role from required fields
+    REQUIRED_FIELDS = ['name']  
 
     groups = models.ManyToManyField(Group, related_name="auth_app_users", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="auth_app_users", blank=True)

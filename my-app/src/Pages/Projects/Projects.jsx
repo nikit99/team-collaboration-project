@@ -42,7 +42,6 @@ const Projects = () => {
 
   return (
     <>
-      {/* <SideBar /> */}
       <div className="projects-container">
         <h2 className='projects-heading'>My Projects</h2>
 

@@ -91,7 +91,7 @@
 }
 
 .delete-icon:hover {
-    color: #dc3545;
+    /* color: #dc3545; */
     transform: scale(1.2);
 }
 
