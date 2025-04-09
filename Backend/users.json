@@ -1,0 +1,382 @@
+[
+{
+  "model": "auth_app.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$mImzRmullbmgJSF9QCcgkA$SGaImqaBDR8Hm460oQWIeq14Ka9Ly1cUpGz07HllWLU=",
+    "last_login": "2025-03-19T11:30:40.690Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-19T07:40:25.933Z",
+    "name": "Virat Kohli",
+    "email": "virat@example.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$vivZ3uIkike2zuN3GghI88$BO2ocMNwwU5FhMwhDvestfxgdolr8Qyv0Y7zyOpMbwo=",
+    "last_login": "2025-03-26T11:46:43.825Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-19T07:54:07.267Z",
+    "name": "Rohit Sharma",
+    "email": "rohit@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$GTg4fkP1h1yk9K20xcCVF0$X9CraVOAKTZ4ov8+u4eJ18J140WvUZiim84fGJB5SAQ=",
+    "last_login": "2025-03-19T09:54:07.661Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-19T09:51:19.299Z",
+    "name": "Rahul Ojha",
+    "email": "rahul@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$KOnxN4rN7mqPtQDBEya6kk$W48lz0WOsW5gGQYDkDgp/RTliDT1tnkCGVKR+8zDUzk=",
+    "last_login": "2025-03-27T21:03:51.595Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-19T10:39:29.806Z",
+    "name": "Sachin Tendulkar",
+    "email": "sachin@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$cQ1KuLkMQmtu3h62ZqtgRz$6KtALxvawmh8P3I0ttsarTdwHEkvtFSaXGtni6ApHWM=",
+    "last_login": "2025-03-19T12:27:12.136Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-19T11:31:51.688Z",
+    "name": "hardik pandya",
+    "email": "hardik@gmail.com",
+    "role": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$cAcTmIysDqM3xWdrhYAzMK$Jmc0B4WVIEADd/8d8BPrP5TUeK3t4TTNnMIy5algUSY=",
+    "last_login": "2025-03-20T08:21:31.174Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T08:21:10.309Z",
+    "name": "suraj tomer",
+    "email": "suraj@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$0TkQhLE601yfTTWSqkV4ut$5nH8M/1yvITpcrgD7OPN8cgTyBQebp8Agj62qonHD1o=",
+    "last_login": "2025-03-23T14:01:00.282Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T08:24:18.813Z",
+    "name": "Shyam Yadav",
+    "email": "shyam@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$l0dVFge9rjavDREe5BQIXo$o3B3lLS9n90dJi5++pAaHjWC+nD6oPuwErFgz0GRQ4s=",
+    "last_login": "2025-04-09T04:20:40.164Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-03-20T08:33:24.760Z",
+    "name": "Nikit Ojha",
+    "email": "nikitojha99@gmail.com",
+    "role": "superadmin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$QvdN429CfrdFQKZ54q3Gxn$jha1Pr/xCvunYe5AEkRxZAoMlg+z6oaHT6orJff4xqM=",
+    "last_login": "2025-03-27T18:49:41.697Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T12:14:25.912Z",
+    "name": "karan Singh",
+    "email": "karan@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$hIKKXpVw8Vqf9XWRgdeL6h$M/jpnGsq66BkwMUE9PKqkSvBv/pN4PyxCF4fGUOzI98=",
+    "last_login": "2025-03-20T12:52:24.899Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T12:52:23.666Z",
+    "name": "Jayant Patel",
+    "email": "jayant@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$Ir6kdxYW96kcCX6Gus9WiP$+5MQavWyZxzm5oDEfdeOsBoahaZdN0zPZa4QFsrBw4Y=",
+    "last_login": "2025-03-20T13:57:19.886Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T13:57:18.588Z",
+    "name": "Jatin Jain",
+    "email": "jatin@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 19,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$wz8q87AIxT6t77XMqNnwjk$65HDvkcpGk74cx/X4GRD1SfoIclBeMWJO0wStCCi4Ps=",
+    "last_login": "2025-03-20T19:41:16.038Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T19:41:15.262Z",
+    "name": "kedhar jadav",
+    "email": "kedhar@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 20,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$gzdAjOE94tGwniGcrXWAQr$fKHbYxD/q8FDsBqdF1aDYtRmv9ihgjIoIythnv0u5A4=",
+    "last_login": "2025-03-23T18:34:59.284Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-20T19:57:03.402Z",
+    "name": "harbajan singh",
+    "email": "harbajan@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$mqhHDqgRFxLxnQ4Nks4PTW$vFjq3wjDVvVONxH396fUA8SrmqCJ1AFBEoinllbq2lE=",
+    "last_login": "2025-03-21T05:09:13.823Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-21T05:09:12.868Z",
+    "name": "shyam sunder",
+    "email": "shyam12@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 22,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$NCMq4QLWLh8raxj6Az3UIK$C6ZIVWZ9foICHKHUu+7bTs6Cp7iQgiJvFQl+x/QQrOw=",
+    "last_login": "2025-03-21T06:35:33.955Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-21T06:35:32.736Z",
+    "name": "Ram jadav",
+    "email": "ram1@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 23,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$p7Zb9x6tg9R45Tx6otkpAt$HNr1O4rNoTdM6Ec8GB0Y/eGT1Ni0p6ymGuZ3d8SgWnQ=",
+    "last_login": "2025-04-04T04:46:28.663Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-21T17:52:08.344Z",
+    "name": "manish kushwah",
+    "email": "manish@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 24,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$sJg5Qhzku1hNTkhxkxu5Jn$xjmtkjM3Brr+5JyN5TSqk0ijzRiA2qKURwSKmhZJi+w=",
+    "last_login": "2025-03-24T12:47:22.989Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-21T21:03:02.891Z",
+    "name": "Raman Yadav",
+    "email": "raman@gmail.com",
+    "role": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 26,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$zcHGUSf3oNcEguQ7BCvozz$EGDa1EzemjF24wAa1d+W3W55gQ8ZjU1YtJOtJjlE/gA=",
+    "last_login": "2025-03-23T15:16:14.749Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-22T12:03:20.719Z",
+    "name": "Satyam yadav",
+    "email": "satyam@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 27,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$Xclr9bRCFjSNTsqN1Dr84d$Cxd0fMow0yYFZy+78Z+Ia+2PcTQ2TEUPgUJpveHx27E=",
+    "last_login": "2025-04-04T08:09:55.720Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-22T12:27:37.346Z",
+    "name": "Dharman Shah",
+    "email": "dharman@gmail.com",
+    "role": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth_app.user",
+  "pk": 32,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$ulNasLZcZqxnUsXxlJ2wl6$wboEvsXV9lmgX7+5tcoI6WssyAqoCkW8NC0Eql4lsfs=",
+    "last_login": "2025-04-01T10:13:51.574Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-03-24T07:20:27.108Z",
+    "name": "Neelesh Sharma",
+    "email": "neelesh@gmail.com",
+    "role": "user",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

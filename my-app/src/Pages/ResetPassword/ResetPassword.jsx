@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { resetPassword } from '../../api/authapi';
+import { resetPassword } from '../../api/authApi';
 
 const ResetPassword = () => {
   const { userId, token } = useParams();

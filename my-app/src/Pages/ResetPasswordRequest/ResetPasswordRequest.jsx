@@ -1,8 +1,6 @@
-
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { requestPasswordReset } from '../../api/authapi';
+import { requestPasswordReset } from '../../api/authApi';
 import './ResetPasswordRequest.css';
 
 const ResetPasswordRequest = () => {
@@ -25,7 +23,9 @@ const ResetPasswordRequest = () => {
       <h2 className="reset-password-title">Reset Password</h2>
       <form onSubmit={handleSubmit} className="reset-password-form">
         <div className="input-group">
-          <label htmlFor="email" className="reset-password-label">Email Address</label>
+          <label htmlFor="email" className="reset-password-label">
+            Email Address
+          </label>
           <input
             type="email"
             id="email"

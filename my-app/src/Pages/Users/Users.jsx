@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, updateUserRole, deleteUser } from '../../api/authapi';
+import { getUsers, updateUserRole, deleteUser } from '../../api/authApi';
 import {
   FaEdit,
   FaTrash,
@@ -222,7 +222,7 @@ const User = () => {
         handleFilterChange('role', selectedOption.value);
         setPagination(prev => ({ ...prev, currentPage: 1 }));
       }}
-      classNamePrefix="select"
+      //classNamePrefix="select"
       className="react-select-container"
       classNamePrefix="react-select"
       placeholder="Select role..."

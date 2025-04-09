@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { getTasks } from '../../api/taskApi';
 import { getWorkspaces } from '../../api/workspaceApi';
 import { getProjects } from '../../api/projectsApi';
-import SideBar from '../../Components/Sidebar/Sidebar';
 import './Dashboard.css';
 
 const Dashboard = () => {

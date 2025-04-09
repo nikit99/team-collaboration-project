@@ -5,7 +5,7 @@ import { createTask, getTaskById, updateTask } from '../../api/taskApi';
 import { getProjects } from '../../api/projectsApi';
 import './TaskForm.css';
 import { getWorkspaces } from '../../api/workspaceApi';
-import { getUsers, getUserById } from '../../api/authapi';
+import { getUsers, getUserById } from '../../api/authApi';
 
 const TaskForm = () => {
   const { id } = useParams();

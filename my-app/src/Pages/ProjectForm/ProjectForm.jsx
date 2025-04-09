@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { createProject, updateProject, getProjectById } from '../../api/projectsApi';
-import { getUserById, getUsers } from '../../api/authapi';
+import { getUserById, getUsers } from '../../api/authApi';
 import { getWorkspaces } from '../../api/workspaceApi';
 import './ProjectForm.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 
 const ProjectForm = () => {
   const { id } = useParams();

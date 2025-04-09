@@ -4,7 +4,7 @@ import { handleAuth } from '../../utils/authHandler';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Signin.css';
+import './SignIn.css';
 
 const Signin = () => {
   const [formData, setFormData] = useState({

@@ -3,7 +3,6 @@ import { getWorkspaces, deleteWorkspace } from '../../api/workspaceApi';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash, FaPlus, FaEye, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Workspace.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 
 const Workspace = () => {
   const [workspaces, setWorkspaces] = useState([]);

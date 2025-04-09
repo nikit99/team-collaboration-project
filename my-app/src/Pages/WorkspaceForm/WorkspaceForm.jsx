@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { createWorkspace, updateWorkspace, getWorkspaceById } from '../../api/workspaceApi';
-import { getUserById, getUsers } from '../../api/authapi';
+import { getUserById, getUsers } from '../../api/authApi';
 import './WorkspaceForm.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 
 const WorkspaceForm = () => {
   const { id } = useParams();

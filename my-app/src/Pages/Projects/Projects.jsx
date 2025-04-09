@@ -3,7 +3,6 @@ import { getProjects, deleteProject } from '../../api/projectsApi';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash, FaPlus, FaEye } from 'react-icons/fa';
 import './Projects.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 
 
 

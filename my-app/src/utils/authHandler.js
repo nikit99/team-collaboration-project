@@ -1,4 +1,4 @@
-import { signup, signin } from '../api/authapi';
+import { signup, signin } from '../api/authApi';
 
 export const handleAuth = async (type, formData, setError, navigate) => {
   try {

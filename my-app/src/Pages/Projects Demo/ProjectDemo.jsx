@@ -21,7 +21,6 @@ import {
   FaChevronRight
 } from 'react-icons/fa';
 import './ProjectDemo.css';
-import SideBar from '../../Components/Sidebar/Sidebar';
 import Pagination from '../../Components/Pagination/Pagination';
 import Select from 'react-select';
 
