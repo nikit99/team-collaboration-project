@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import {
   getProjects,
@@ -163,6 +165,12 @@ const Projects = () => {
 
   const statusOptions = [
     { value: 'all', label: 'All' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'in_progress', label: 'In Progress' },
+    { value: 'cancelled', label: 'Cancelled' }
+  ];
+
+  const editStatusOptions = [
     { value: 'completed', label: 'Completed' },
     { value: 'in_progress', label: 'In Progress' },
     { value: 'cancelled', label: 'Cancelled' }
@@ -379,9 +387,10 @@ const Projects = () => {
                         key={project.id}
                         className="clickable-row"
                         onClick={(e) => {
-                          if (!e.target.closest('.action-button')) {
-                            navigate(`/tasks/${project.id}`);
-                          }
+                          if (!e.target.closest('.table-cell-select-container') && 
+        !e.target.closest('.action-button')) {
+      navigate(`/tasks/${project.id}`);
+    }
                         }}
                       >
                         <td>{project.name}</td>
@@ -389,7 +398,7 @@ const Projects = () => {
                         <td>{project.created_by}</td>
                         <td>{project.start_date}</td>
                         <td>{project.end_date}</td>
-                        <td>
+                        {/* <td>
                           {editingProjectId === project.id ? (
                             <select
                               value={updatedStatus}
@@ -406,7 +415,55 @@ const Projects = () => {
                               {formatStatus(project.status)}
                             </span>
                           )}
-                        </td>
+                        </td> */}
+                        <td>
+  {editingProjectId === project.id ? (
+    <div onClick={(e) => e.stopPropagation()}>
+    <Select
+      options={editStatusOptions}
+      value={editStatusOptions.find(option => option.value === updatedStatus)}
+      onChange={(selectedOption) => {
+        setUpdatedStatus(selectedOption.value);
+      }}
+      className="table-cell-select-container"
+      classNamePrefix="table-cell-select"
+      isSearchable={false}
+      menuPortalTarget={document.body}
+      styles={{
+        control: (base) => ({
+          ...base,
+          minHeight: '32px',
+          height: '32px',
+          width: '120px',
+          fontSize: '14px',
+          border: '1px solid #ced4da',
+          boxShadow: 'none',
+        }),
+        valueContainer: (base) => ({
+          ...base,
+          padding: '0 8px',
+          height: '30px',
+        }),
+        dropdownIndicator: (base) => ({
+          ...base,
+          padding: '4px',
+        }),
+        indicatorSeparator: (base) => ({
+          ...base,
+          margin: '4px 0',
+          backgroundColor: '#ced4da',
+        }),
+      }}
+      // className="action-button"
+      onClick={(e) => e.stopPropagation()}
+    />
+    </div>
+  ) : (
+    <span className={`status-badge status-${project.status}`}>
+      {formatStatus(project.status)}
+    </span>
+  )}
+</td>
                         {isAdminOrSuperAdmin && (
                           <td>
                             {editingProjectId === project.id ? (

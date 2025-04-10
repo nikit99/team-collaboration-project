@@ -158,27 +158,16 @@ const User = () => {
     { value: 'superadmin', label: 'Super Admin' },
   ];
 
+  const editRoleOptions = [
+    { value: 'user', label: 'User' },
+    { value: 'admin', label: 'Admin' },
+  ];
+
   return (
     <div className="user-container">
-      <h2 className="user-heading">Team Member List</h2>
+      <h2 className="user-heading">Team Members List</h2>
 
-      {/* <div className="filter-container">
-        <div className="filter-group">
-          <label>Filter by Role: </label>
-          <select
-            value={filters.role}
-            onChange={(e) => {
-              handleFilterChange('role', e.target.value);
-              setPagination((prev) => ({ ...prev, currentPage: 1 }));
-            }}
-          >
-            <option value="all">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-            <option value="superadmin">Super Admin</option>
-          </select>
-        </div>
-
+      <div className="filter-container">
         <div className="filter-group">
           <label>Filter by Role:</label>
           <Select
@@ -188,18 +177,32 @@ const User = () => {
               handleFilterChange('role', selectedOption.value);
               setPagination((prev) => ({ ...prev, currentPage: 1 }));
             }}
-            classNamePrefix="select"
+            //classNamePrefix="select"
+            className="react-select-container"
+            classNamePrefix="react-select"
             placeholder="Select role..."
-            isSearchable={true} // Optional
-            menuPortalTarget={document.body} // Portal renders menu at body level
+            isSearchable={true}
+            menuPortalTarget={document.body}
             styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 3 }),
+              control: (base) => ({
+                ...base,
+                minHeight: '38px', // Match your search input height
+                width: '150px', // Match your search input width
+                fontSize: '14px',
+                border: '1px solid #ced4da',
+                boxShadow: 'none',
+              }),
+              menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+              dropdownIndicator: (base) => ({
+                ...base,
+                padding: '4px',
+              }),
             }}
           />
         </div>
 
         <div className="filter-group">
-          <label>Search: </label>
+          <label>Search:</label>
           <input
             type="text"
             className="search-input"
@@ -211,56 +214,7 @@ const User = () => {
             }}
           />
         </div>
-      </div> */}
-      <div className="filter-container">
-  <div className="filter-group">
-    <label>Filter by Role:</label>
-    <Select
-      options={roleOptions}
-      value={roleOptions.find(option => option.value === filters.role)}
-      onChange={(selectedOption) => {
-        handleFilterChange('role', selectedOption.value);
-        setPagination(prev => ({ ...prev, currentPage: 1 }));
-      }}
-      //classNamePrefix="select"
-      className="react-select-container"
-      classNamePrefix="react-select"
-      placeholder="Select role..."
-      isSearchable={true}
-      menuPortalTarget={document.body}
-      styles={{
-        control: (base) => ({
-          ...base,
-          minHeight: '38px', // Match your search input height
-          width: '150px', // Match your search input width
-          fontSize: '14px',
-          border: '1px solid #ced4da',
-          boxShadow: 'none',
-        }),
-        menuPortal: base => ({ ...base, zIndex: 9999 }),
-        dropdownIndicator: (base) => ({
-          ...base,
-          padding: '4px'
-        }),
-        
-      }}
-    />
-  </div>
-
-  <div className="filter-group">
-    <label>Search:</label>
-    <input
-      type="text"
-      className="search-input"
-      placeholder="Enter Name"
-      value={filters.search}
-      onChange={(e) => {
-        handleFilterChange('search', e.target.value);
-        setPagination(prev => ({ ...prev, currentPage: 1 }));
-      }}
-    />
-  </div>
-</div>
+      </div>
 
       {loading ? (
         <p className="loading-message">Loading users...</p>
@@ -303,19 +257,101 @@ const User = () => {
                     </td>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
+                    {/* <td>
+  {editingUserId === user.id ? (
+    <Select
+      options={editRoleOptions}
+      value={editRoleOptions.find(option => option.value === updatedRole)}
+      onChange={(selectedOption) => setUpdatedRole(selectedOption.value)}
+      className="react-select-container"
+      classNamePrefix="react-select"
+      menuPortalTarget={document.body}
+      styles={{
+        control: (base) => ({
+          ...base,
+          minHeight: '30px',
+          height: '30px',
+          width: '100px',
+          fontSize: '14px',
+          border: '1px solid #ced4da',
+          boxShadow: 'none',
+        }),
+        valueContainer: (base) => ({
+          ...base,
+          padding: '0 1px',
+          height: '30px',
+        }),
+        input: (base) => ({
+          ...base,
+          margin: '0',
+          padding: '0',
+        }),
+        dropdownIndicator: (base) => ({
+          ...base,
+          padding: '1px',
+        }),
+        indicatorSeparator: (base) => ({
+          ...base,
+          margin: '1px 0',
+        }),
+        menuPortal: base => ({ ...base, zIndex: 9999 }),
+      }}
+    />
+  ) : (
+    <span className={`role-badge role-${user.role}`}>
+      {user.role}
+    </span>
+  )}
+</td> */}
                     <td>
                       {editingUserId === user.id ? (
-                        <select
-                          value={updatedRole}
-                          onChange={handleRoleChange}
-                          className="role-select"
-                        >
-                          <option value="user">User</option>
-                          <option value="admin">Admin</option>
-                        </select>
+                        <Select
+                          options={editRoleOptions}
+                          value={editRoleOptions.find(
+                            (option) => option.value === updatedRole
+                          )}
+                          onChange={(selectedOption) =>
+                            setUpdatedRole(selectedOption.value)
+                          }
+                          className="react-select-container"
+                          classNamePrefix="react-select"
+                          menuPortalTarget={document.body}
+                          styles={{
+                            control: (base) => ({
+                              ...base,
+                              minHeight: '30px',
+                              height: '30px',
+                              width: '100px',
+                              fontSize: '14px',
+                              border: '1px solid #ced4da',
+                              boxShadow: 'none',
+                            }),
+                            valueContainer: (base) => ({
+                              ...base,
+                              padding: '0 1px',
+                              height: '30px',
+                            }),
+                            input: (base) => ({
+                              ...base,
+                              margin: '0',
+                              padding: '0',
+                            }),
+                            dropdownIndicator: (base) => ({
+                              ...base,
+                              padding: '1px',
+                            }),
+                            indicatorSeparator: (base) => ({
+                              ...base,
+                              margin: '1px 0',
+                            }),
+                            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                          }}
+                        />
                       ) : (
                         <span className={`role-badge role-${user.role}`}>
-                          {user.role}
+                          {user.role.charAt(0).toUpperCase() +
+                            user.role.slice(1)}{' '}
+                          {/* Capitalize first letter */}
                         </span>
                       )}
                     </td>
@@ -368,4 +404,3 @@ const User = () => {
 };
 
 export default User;
-

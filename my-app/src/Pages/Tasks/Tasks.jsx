@@ -88,8 +88,6 @@ const Tasks = () => {
             : {}),
         };
 
-      
-
         const { tasks, pagination: paginationData } = await getTasks(
           effectiveFilters,
           pagination.currentPage,
@@ -216,6 +214,12 @@ const Tasks = () => {
     { value: 'completed', label: 'Completed' },
   ];
 
+  const editStatusOptions = [
+    { value: 'to_do', label: 'Todo' },
+    { value: 'in_progress', label: 'In Progress' },
+    { value: 'completed', label: 'Completed' },
+  ];
+
   return (
     <div className="tasks-page-container">
       <div className="tasks-content">
@@ -253,7 +257,7 @@ const Tasks = () => {
                     border: '1px solid #ced4da',
                     boxShadow: 'none',
                   }),
-                  
+
                   dropdownIndicator: (base) => ({
                     ...base,
                     padding: '4px',
@@ -455,7 +459,7 @@ const Tasks = () => {
                         <td>{task.workspace_name}</td>
                         <td>{task.start_date || 'N/A'}</td>
                         <td>{task.due_date || 'N/A'}</td>
-                        <td>
+                        {/* <td>
                           {editingTaskId === task.id ? (
                             <select
                               value={updatedStatus}
@@ -466,6 +470,58 @@ const Tasks = () => {
                               <option value="in_progress">In Progress</option>
                               <option value="completed">Completed</option>
                             </select>
+                          ) : (
+                            <span
+                              className={`status-badge status-${task.status}`}
+                            >
+                              {formatStatus(task.status)}
+                            </span>
+                          )}
+                        </td> */}
+                        <td>
+                          {editingTaskId === task.id ? (
+                            <Select
+                              options={editStatusOptions}
+                              value={editStatusOptions.find(
+                                (option) => option.value === updatedStatus
+                              )}
+                              onChange={(selectedOption) => {
+                                setUpdatedStatus(selectedOption.value);
+                              }}
+                              className="task-status-select-container"
+                              classNamePrefix="task-status-select"
+                              isSearchable={false}
+                              menuPortalTarget={document.body}
+                              styles={{
+                                control: (base) => ({
+                                  ...base,
+                                  minHeight: '32px',
+                                  height: '32px',
+                                  width: '120px',
+                                  fontSize: '14px',
+                                  border: '1px solid #ced4da',
+                                  boxShadow: 'none',
+                                }),
+                                valueContainer: (base) => ({
+                                  ...base,
+                                  padding: '0 8px',
+                                  height: '30px',
+                                }),
+                                dropdownIndicator: (base) => ({
+                                  ...base,
+                                  padding: '4px',
+                                }),
+                                indicatorSeparator: (base) => ({
+                                  ...base,
+                                  margin: '4px 0',
+                                  backgroundColor: '#ced4da',
+                                }),
+                                menu: (base) => ({
+                                  ...base,
+                                  zIndex: 1000,
+                                }),
+                              }}
+                            />
                           ) : (
                             <span
                               className={`status-badge status-${task.status}`}

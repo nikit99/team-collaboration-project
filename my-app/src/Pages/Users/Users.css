@@ -228,6 +228,57 @@
   box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.25);
 }
 
+/*************/
+/* Add these to your existing CSS */
+/* Replace the existing role badge styles with these */
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px; /* Oval shape */
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  min-width: 80px;
+}
+
+/* Role-specific colors */
+.role-user {
+  background-color: #e2e3e5; /* Light gray */
+  color: #383d41;
+  border: 1px solid #d6d8db;
+}
+
+.role-admin {
+  background-color: #cce5ff; /* Light blue */
+  color: #004085;
+  border: 1px solid #b8daff;
+}
+
+.role-superadmin {
+  background-color: #f3e5f5; /* Light purple */
+  color: #8e24aa;
+  border: 1px solid #e9c8f0;
+}
+
+/* Compact React Select styles */
+.react-select-container .react-select__control {
+  min-height: 30px !important;
+  height: 30px !important;
+}
+
+.react-select-container .react-select__value-container {
+  padding: 0 8px !important;
+}
+
+.react-select-container .react-select__single-value {
+  font-size: 14px !important;
+}
+
+.react-select-container .react-select__indicators {
+  height: 28px !important;
+}
+
+/*************/
 
 
 
