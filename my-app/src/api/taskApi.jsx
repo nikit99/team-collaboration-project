@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000/tasks/';
-// const BASE_URL = import.meta.env.TASKS_API_URL;
+// const BASE_URL = 'http://127.0.0.1:8000/tasks/';
+
+
+const BASE_URL = import.meta.env.VITE_TASKS_API_URL;
+
 const token = localStorage.getItem('authToken');
 const headers = { Authorization: `Token ${token}` };
 

@@ -26,6 +26,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
+from apps.auth_app.views import health_check  # 👈 import here
 
 def home(request):
     return JsonResponse({"message": "Welcome to Django API!"})
@@ -37,5 +38,6 @@ urlpatterns = [
     path('workspaces/', include('apps.workspaces.urls')), 
     path('projects/', include('apps.projects.urls')), 
     path('tasks/', include('apps.tasks.urls')), 
+     path('health/', health_check),  # 👈 add this
 ]
 

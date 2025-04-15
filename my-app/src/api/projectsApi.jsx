@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000/projects/';
-// const BASE_URL = import.meta.env.PROJECTS_API_URL;
+// const BASE_URL = 'http://127.0.0.1:8000/projects/';
+
+
+const BASE_URL = import.meta.env.VITE_PROJECTS_API_URL;
 const token = localStorage.getItem('authToken'); 
 const headers = { Authorization: `Token ${token}` };
 

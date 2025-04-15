@@ -1,0 +1,41 @@
+﻿{
+    "family": "teamcollab-django-task",
+    "executionRoleArn": "arn:aws:iam::245178712404:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "django-app",
+            "image": "245178712404.dkr.ecr.eu-north-1.amazonaws.com/teamcollab-django-backend:latest",
+            "cpu": 512,
+            "memory": 1536,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {"name": "DJANGO_SETTINGS_MODULE", "value": "config.settings.production"},
+                {"name": "DB_NAME", "value": "teamcollab_prod"},
+                {"name": "DB_HOST", "value": "teamcollab-db.xxxxxx.eu-north-1.rds.amazonaws.com"},
+                {"name": "DB_USER", "value": "postgres"},
+                {"name": "ALLOWED_HOSTS", "value": "*"},
+                {"name": "DB_PASSWORD", "value": "postgres123"}
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/teamcollab-django",
+                    "awslogs-region": "eu-north-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "networkMode": "bridge",
+    "requiresCompatibilities": ["EC2"],
+    "cpu": "512",
+    "memory": "1536"
+}
+

@@ -1,0 +1,61 @@
+﻿{
+    "family": "teamcollab-django-task",
+    "containerDefinitions": [
+        {
+            "name": "django-app",
+            "image": "245178712404.dkr.ecr.eu-north-1.amazonaws.com/teamcollab-django-backend:latest",
+            "cpu": 1024,
+            "memory": 2048,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DJANGO_SETTINGS_MODULE",
+                    "value": "config.settings"
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": "teamcollab_prod"
+                },
+                {
+                    "name": "DB_HOST",
+                    "value": "teamcollab-db.xxxxxx.eu-north-1.rds.amazonaws.com"
+                },
+                {
+                    "name": "DB_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "value": "postgres123"
+                },
+                {
+                    "name": "ALLOWED_HOSTS",
+                    "value": "*"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/teamcollab-django",
+                    "awslogs-region": "eu-north-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::245178712404:role/ecsTaskRole",
+    "executionRoleArn": "arn:aws:iam::245178712404:role/ecsTaskExecutionRole",
+    "networkMode": "bridge",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "cpu": "1024",
+    "memory": "2048"
+}

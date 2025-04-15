@@ -80,16 +80,69 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'mydb'),
+#         'USER': os.getenv('POSTGRES_USER', 'postgres'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'nikit123'),
+#         'HOST': os.getenv('POSTGRES_HOST', 'db'),  # Use 'db' for Docker, 'localhost' for local
+#         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#     }
+# }
+
+
+# work kr raha tha
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', 'mydb'),
+#         'USER': os.getenv('POSTGRES_USER', 'postgres'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres123'),  # RDS password
+#         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  # RDS host
+#         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'mydb'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'nikit123'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),  # Use 'db' for Docker, 'localhost' for local
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': os.getenv('POSTGRES_DB', 'teamcollab_prod'),  
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),      
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres123'),  # RDS password
+        'HOST': os.getenv('POSTGRES_HOST', 'teamcollab-db.cpgy6yoaedvh.eu-north-1.rds.amazonaws.com'),  # RDS endpoint
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),           # Default PostgreSQL port
+        'OPTIONS': {
+            'connect_timeout': 5,  # 5-second timeout
+            'keepalives': 1,       # Maintain connection
+            'keepalives_idle': 30, # TCP keepalive settings
+            'keepalives_interval': 10,
+            'keepalives_count': 5
+        }
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'teamcollab_prod',
+#         'USER': 'postgres',
+#         'PASSWORD': os.getenv('DB_PASSWORD'),  # From task definition
+#         'HOST': 'teamcollab-db.xxxxxx.eu-north-1.rds.amazonaws.com',  # RDS endpoint
+#         'PORT': '5432',
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

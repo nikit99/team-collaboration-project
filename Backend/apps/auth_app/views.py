@@ -20,10 +20,14 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import LimitOffsetPagination
-from .Pagination import OptionalPageNumberPagination 
+from .Pagination import OptionalPageNumberPagination
+from django.http import JsonResponse 
 
 
 User = get_user_model()
+
+def health_check(request):
+    return JsonResponse({'status': 'ok'})
 
 class SignupView(APIView):
     permission_classes = [AllowAny] 

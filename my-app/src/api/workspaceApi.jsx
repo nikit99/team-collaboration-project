@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://127.0.0.1:8000/workspaces/';
+// const BASE_URL = 'http://127.0.0.1:8000/workspaces/';
+
+
+const BASE_URL = import.meta.env.VITE_WORKSPACES_API_URL;
+
 const token = localStorage.getItem('authToken'); 
 const headers = { Authorization: `Token ${token}` };
 
