@@ -13,7 +13,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',  // Critical for Amplify routing
+  base: './',  // Critical for Amplify routing
   server: {
     host: true,  // Needed for Amplify health checks
   },
