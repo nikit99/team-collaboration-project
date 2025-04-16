@@ -23,7 +23,6 @@ from rest_framework.pagination import LimitOffsetPagination
 from .Pagination import OptionalPageNumberPagination
 from django.http import JsonResponse 
 
-
 User = get_user_model()
 
 def health_check(request):
@@ -63,8 +62,7 @@ class SignupView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
+# okay testing ci/cd
 
 class SigninView(APIView):
 
@@ -242,6 +240,7 @@ class DeleteUserView(APIView):
 
         return Response({"message": "User deleted successfully"}, status=status.HTTP_200_OK)
     
+    
 class UpdateUserRoleView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -265,4 +264,4 @@ class UpdateUserRoleView(APIView):
         user.role = new_role
         user.save()
 
-        return Response({"message": "User role updated successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "User role updated successfully"}, status=status.HTTP_200_OK) 
