@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt /app/
+COPY Backend/requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 RUN pip install psycopg2-binary
