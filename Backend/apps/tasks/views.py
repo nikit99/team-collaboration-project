@@ -57,6 +57,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # okay
+
     def destroy(self, request, *args, **kwargs):
         task = self.get_object()
 
