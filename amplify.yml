@@ -17,20 +17,39 @@
 #           - node_modules/**/*
 
 
+# version: 1
+# frontend:
+#   phases:
+#     preBuild:
+#       commands:
+#         - cd my-app
+#         - npm ci  # More reliable than npm install
+#     build:
+#       commands:
+#         - npm run build
+#   artifacts:
+#     baseDirectory: my-app/dist
+#     files:
+#       - '**/*'
+#   cache:
+#     paths:
+#       - my-app/node_modules/**/*
+
 version: 1
+appRoot: my-app  # 👈 This is the key addition
 frontend:
   phases:
     preBuild:
       commands:
-        - cd my-app
-        - npm ci  # More reliable than npm install
+        - npm ci
     build:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: my-app/dist
+    baseDirectory: dist
     files:
       - '**/*'
   cache:
     paths:
-      - my-app/node_modules/**/*
+      - node_modules/**/*
+

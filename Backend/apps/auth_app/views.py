@@ -64,6 +64,7 @@ class SignupView(APIView):
 
 # okay testing ci/cd
 # testing again
+# test
 
 class SigninView(APIView):
 
