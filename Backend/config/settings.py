@@ -22,8 +22,16 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key')
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
+# settings.py
+ALLOWED_HOSTS = ['*']  # Allows all hosts
+
+# Also add this for development security relaxation
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*']
+
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'main.d3gs70n8ag6toz.amplifyapp.com,localhost,127.0.0.1').split(',')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'main.d3gs70n8ag6toz.amplifyapp.com,localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -126,23 +134,6 @@ DATABASES = {
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'teamcollab_prod',
-#         'USER': 'postgres',
-#         'PASSWORD': os.getenv('DB_PASSWORD'),  # From task definition
-#         'HOST': 'teamcollab-db.xxxxxx.eu-north-1.rds.amazonaws.com',  # RDS endpoint
-#         'PORT': '5432',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 # Password validation
